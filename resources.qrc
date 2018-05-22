@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/Img">
+        <file>asteroid-1.png</file>
+        <file>asteroid-2.png</file>
+        <file>back.png</file>
+        <file>back-modal.png</file>
+        <file>icon.png</file>
+    </qresource>
+</RCC>
