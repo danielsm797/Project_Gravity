@@ -27,16 +27,24 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     game.cpp \
-    login.cpp
+    login.cpp \
+    user.cpp \
+    scene.cpp
 
 HEADERS += \
         mainwindow.h \
     game.h \
-    login.h
+    login.h \
+    user.h \
+    scene.h
 
 FORMS += \
         mainwindow.ui \
-    login.ui
+    login.ui \
+    scene.ui
 
 RESOURCES += \
     resources.qrc
+
+DISTFILES += \
+    Users_doc.txt

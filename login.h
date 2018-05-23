@@ -2,7 +2,10 @@
 #define LOGIN_H
 
 #include <QDialog>
-#include <QDebug>
+#include <QVector>
+#include <QMessageBox>
+#include "user.h"
+#include "scene.h"
 
 using namespace std;
 
@@ -20,6 +23,10 @@ class LogIn : public QDialog
         explicit LogIn(QWidget *parent = 0);
 
         void add_pattern(QPushButton *pb, QString str);
+
+        void show_message(int type_, QString mess_);
+
+        void clear();
 
         ~LogIn();
 
@@ -43,7 +50,7 @@ class LogIn : public QDialog
 
         void on_btn_pat_6_clicked();
 
-public slots:
+    public slots:
 
         void receive_data(bool value);
 
@@ -57,9 +64,13 @@ public slots:
 
         bool is_multiplayer;
 
+        QVector<User *> users;
+
         QString user_name;
 
         QString pattern;
+
+        Scene sc;
 
         Ui::LogIn *ui;
 };

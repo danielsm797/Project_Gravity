@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>Log-In</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/Img/icon.png</normaloff>:/Img/icon.png</iconset>
+  </property>
   <widget class="QLabel" name="lbl_back">
    <property name="geometry">
     <rect>

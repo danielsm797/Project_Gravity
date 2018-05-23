@@ -5,5 +5,9 @@
         <file>back.png</file>
         <file>back-modal.png</file>
         <file>icon.png</file>
+        <file>back-game.png</file>
+        <file>versus.png</file>
+        <file>player1.png</file>
+        <file>player2.png</file>
     </qresource>
 </RCC>

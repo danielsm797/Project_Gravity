@@ -5,6 +5,10 @@ LogIn::LogIn(QWidget *parent) : QDialog(parent), ui(new Ui::LogIn)
 {
     ui->setupUi(this);
 
+    sc.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+
+    sc.setAttribute(Qt::WA_TranslucentBackground);
+
     is_login = true;
 
     connect(this, SIGNAL(send_data(bool)), this, SLOT(receive_data(bool)));
@@ -22,8 +26,40 @@ void LogIn::add_pattern(QPushButton *pb, QString str)
         pattern.remove(str);
         pb->setIcon(QIcon(QPixmap(":/Img/asteroid-1.png")));
     }
+}
 
-    qDebug() << pattern;
+void LogIn::show_message(int type_, QString mess_)
+{
+    if (type_ == 1)
+    {
+        QMessageBox msg(QMessageBox::Critical, "Log-In", mess_, QMessageBox::Ok, this);
+        msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+        msg.exec();
+    }
+    else if (type_ == 2)
+    {
+        QMessageBox msg(QMessageBox::Information, "Log-In", mess_, QMessageBox::Ok, this);
+        msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+        msg.exec();
+    }
+}
+
+void LogIn::clear()
+{
+    user_name = "";
+
+    pattern = "";
+
+    ui->le_username->setText("");
+
+    QIcon icon(QPixmap(":/Img/asteroid-1.png"));
+
+    ui->btn_pat_1->setIcon(icon);
+    ui->btn_pat_2->setIcon(icon);
+    ui->btn_pat_3->setIcon(icon);
+    ui->btn_pat_4->setIcon(icon);
+    ui->btn_pat_5->setIcon(icon);
+    ui->btn_pat_6->setIcon(icon);
 }
 
 LogIn::~LogIn()
@@ -34,12 +70,12 @@ LogIn::~LogIn()
 void LogIn::on_btn_login_clicked()
 {
     QString q_str_new("QPushButton {color: yellow; border: 1px solid yellow;}"
-                  "QPushButton:hover {background-color: rgba(255, 255, 0, .2);}"
-                  "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+                      "QPushButton:hover {background-color: rgba(255, 255, 0, .2);}"
+                      "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
     QString q_str_old("QPushButton {color: white; border: 1px solid white;}"
-                  "QPushButton:hover {background-color: rgba(0, 187, 193, .4);}"
-                  "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+                      "QPushButton:hover {background-color: rgba(0, 187, 193, .4);}"
+                      "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
     ui->btn_login->setStyleSheet(q_str_new);
 
@@ -51,12 +87,12 @@ void LogIn::on_btn_login_clicked()
 void LogIn::on_btn_new_clicked()
 {
     QString q_str_new("QPushButton {color: yellow; border: 1px solid yellow;}"
-                  "QPushButton:hover {background-color: rgba(255, 255, 0, .2);}"
-                  "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+                      "QPushButton:hover {background-color: rgba(255, 255, 0, .2);}"
+                      "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
     QString q_str_old("QPushButton {color: white; border: 1px solid white;}"
-                  "QPushButton:hover {background-color: rgba(0, 187, 193, .4);}"
-                  "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+                      "QPushButton:hover {background-color: rgba(0, 187, 193, .4);}"
+                      "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
     ui->btn_login->setStyleSheet(q_str_old);
 
@@ -68,6 +104,63 @@ void LogIn::on_btn_new_clicked()
 void LogIn::on_btn_start_clicked()
 {
     user_name = ui->le_username->text();
+
+    if (user_name.isEmpty()) // Validamos el nombre de usuario y contraseña.
+    {
+        show_message(1, "El nombre de usuario es requerido.");
+        return;
+    }
+
+    if (pattern.isEmpty())
+    {
+        show_message(1, "La contraseña es requerida.");
+        return;
+    }
+
+    if (users.length() < 2)
+    {
+        users.push_back(new User(user_name, pattern));
+
+        if (is_login && !users.last()->getExist()) // El usuario no se encuentra creado.
+        {
+            show_message(1, "Nombre de usuario o contraseña incorrectos.");
+
+            // Eliminamos el usuario.
+            users.removeLast();
+
+            return;
+        }
+        else if (!is_login && users.last()->getExist()) // Estamos creando el usuario y éste ya se encuentra registrado.
+        {
+            show_message(1, "Nombre de usuario existente.");
+
+            // Eliminamos el usuario.
+            users.removeLast();
+
+            return;
+        }
+        else if (!is_login && !users.last()->getExist())
+        {
+            clear();
+
+            show_message(2, "Usuario creado exitosamente!.");
+        }
+        else
+        {
+            clear();
+
+            show_message(2, "Sesión iniciada.");
+
+            ui->lbl_info->setText("Second Player");
+        }
+
+        if (!is_multiplayer || (is_multiplayer && users.length() == 2))
+        {
+            sc.show();
+
+            this->close();
+        }
+    }
 }
 
 void LogIn::receive_data(bool value)
