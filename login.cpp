@@ -156,6 +156,16 @@ void LogIn::on_btn_start_clicked()
 
         if (!is_multiplayer || (is_multiplayer && users.length() == 2))
         {
+            // Enviamos los datos.
+            sc.setPlayer_1(users.first());
+
+            if (is_multiplayer) // Si es multiplayer enviamos el otro usuario.
+            {
+                sc.setPlayer_2(users.last());
+            }
+
+            emit sc.open(is_multiplayer);
+
             sc.show();
 
             this->close();

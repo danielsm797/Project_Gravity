@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "game.h"
 #include "login.h"
 
 namespace Ui

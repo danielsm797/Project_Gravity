@@ -9,5 +9,8 @@
         <file>versus.png</file>
         <file>player1.png</file>
         <file>player2.png</file>
+        <file>offline.png</file>
+        <file>online.png</file>
+        <file>taco.png</file>
     </qresource>
 </RCC>

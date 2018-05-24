@@ -26,17 +26,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    game.cpp \
     login.cpp \
     user.cpp \
-    scene.cpp
+    scene.cpp \
+    taco.cpp \
+    element.cpp
 
 HEADERS += \
         mainwindow.h \
-    game.h \
     login.h \
     user.h \
-    scene.h
+    scene.h \
+    taco.h \
+    element.h
 
 FORMS += \
         mainwindow.ui \
