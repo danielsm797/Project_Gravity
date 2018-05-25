@@ -30,7 +30,9 @@ SOURCES += \
     user.cpp \
     scene.cpp \
     taco.cpp \
-    element.cpp
+    element.cpp \
+    planet.cpp \
+    level.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,7 +40,9 @@ HEADERS += \
     user.h \
     scene.h \
     taco.h \
-    element.h
+    element.h \
+    planet.h \
+    level.h
 
 FORMS += \
         mainwindow.ui \
@@ -48,5 +52,4 @@ FORMS += \
 RESOURCES += \
     resources.qrc
 
-DISTFILES += \
-    Users_doc.txt
+DISTFILES +=
