@@ -29,5 +29,6 @@
         <file>12.png</file>
         <file>13.png</file>
         <file>colors.png</file>
+        <file>pin.png</file>
     </qresource>
 </RCC>

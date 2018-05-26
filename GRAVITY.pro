@@ -32,7 +32,9 @@ SOURCES += \
     taco.cpp \
     element.cpp \
     planet.cpp \
-    level.cpp
+    level.cpp \
+    velocity.cpp \
+    physics.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,12 +44,15 @@ HEADERS += \
     taco.h \
     element.h \
     planet.h \
-    level.h
+    level.h \
+    velocity.h \
+    physics.h
 
 FORMS += \
         mainwindow.ui \
     login.ui \
-    scene.ui
+    scene.ui \
+    velocity.ui
 
 RESOURCES += \
     resources.qrc
