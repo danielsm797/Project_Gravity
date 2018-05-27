@@ -7,7 +7,7 @@ LogIn::LogIn(QWidget *parent) : QDialog(parent), ui(new Ui::LogIn)
 
     sc.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 
-    sc.setAttribute(Qt::WA_TranslucentBackground);
+    // sc.setAttribute(Qt::WA_TranslucentBackground);
 
     is_login = true;
 

@@ -1,20 +1,5 @@
 <RCC>
     <qresource prefix="/Img">
-        <file>asteroid-1.png</file>
-        <file>asteroid-2.png</file>
-        <file>back.png</file>
-        <file>back-modal.png</file>
-        <file>icon.png</file>
-        <file>back-game.png</file>
-        <file>versus.png</file>
-        <file>player1.png</file>
-        <file>player2.png</file>
-        <file>offline.png</file>
-        <file>online.png</file>
-        <file>taco.png</file>
-        <file>taco_h.png</file>
-        <file>asteroid.png</file>
-        <file>comet.png</file>
         <file>1.png</file>
         <file>2.png</file>
         <file>3.png</file>
@@ -28,7 +13,17 @@
         <file>11.png</file>
         <file>12.png</file>
         <file>13.png</file>
+        <file>asteroid.png</file>
+        <file>asteroid-1.png</file>
+        <file>asteroid-2.png</file>
+        <file>back.png</file>
+        <file>back-game.jpg</file>
+        <file>back-modal.jpg</file>
         <file>colors.png</file>
+        <file>comet.png</file>
+        <file>icon.png</file>
         <file>pin.png</file>
+        <file>taco.png</file>
+        <file>taco_h.png</file>
     </qresource>
 </RCC>

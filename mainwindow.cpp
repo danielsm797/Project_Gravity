@@ -17,13 +17,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btn_multiplayer_clicked()
 {
-    QString q_str_new("QPushButton {color: yellow; border: 1px solid yellow;}"
-                  "QPushButton:hover {background-color: rgba(255, 255, 0, .2);}"
-                  "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+    QString q_str_new("QPushButton {color: #FAE6AA;	border: 1px solid #FAE6AA;font: 11pt 'MV Boli';}"
+                      "QPushButton:hover {background-color: #FAE6AA;color: black;}"
+                      "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
-    QString q_str_old("QPushButton {color: white; border: 1px solid white;}"
-                  "QPushButton:hover {background-color: rgba(0, 187, 193, .4);}"
-                  "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+    QString q_str_old("QPushButton {color: white;border: 1px solid white;font: 11pt 'MV Boli';}"
+                      "QPushButton:hover {background-color: white;color: black;}"
+                      "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
     ui->btn_multiplayer->setStyleSheet(q_str_new);
 
@@ -34,13 +34,13 @@ void MainWindow::on_btn_multiplayer_clicked()
 
 void MainWindow::on_btn_singleplayer_clicked()
 {
-    QString q_str_new("QPushButton {color: yellow; border: 1px solid yellow;}"
-                  "QPushButton:hover {background-color: rgba(255, 255, 0, .2);}"
-                  "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+    QString q_str_new("QPushButton {color: #FAE6AA;	border: 1px solid #FAE6AA;font: 11pt 'MV Boli';}"
+                      "QPushButton:hover {background-color: #FAE6AA;color: black;}"
+                      "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
-    QString q_str_old("QPushButton {color: white; border: 1px solid white;}"
-                  "QPushButton:hover {background-color: rgba(0, 187, 193, .4);}"
-                  "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+    QString q_str_old("QPushButton {color: white;border: 1px solid white;font: 11pt 'MV Boli';}"
+                      "QPushButton:hover {background-color: white;color: black;}"
+                      "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
     ui->btn_multiplayer->setStyleSheet(q_str_old);
 

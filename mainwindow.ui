@@ -49,8 +49,8 @@
    <widget class="QPushButton" name="btn_multiplayer">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>230</y>
+      <x>340</x>
+      <y>240</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -59,10 +59,12 @@
      <string notr="true">QPushButton {
 	color: white;	
 	border: 1px solid white;
+	font: 11pt &quot;MV Boli&quot;;
 }
 
 QPushButton:hover { 
-	background-color: rgba(0, 187, 193, .4);
+	background-color: white;
+	color: black;
 }
 
 QPushButton:pressed { 
@@ -81,20 +83,22 @@ QPushButton:pressed {
    <widget class="QPushButton" name="btn_singleplayer">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>270</y>
+      <x>470</x>
+      <y>240</y>
       <width>121</width>
       <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
-	color: yellow;	
-	border: 1px solid yellow;
+	color: #FAE6AA;	
+	border: 1px solid #FAE6AA;
+	font: 11pt &quot;MV Boli&quot;;
 }
 
 QPushButton:hover { 
-	background-color: rgba(255, 255, 0, .2);
+	background-color: #FAE6AA;
+	color: black;
 }
 
 QPushButton:pressed { 
@@ -113,20 +117,22 @@ QPushButton:pressed {
    <widget class="QPushButton" name="btn_next">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>230</y>
-      <width>121</width>
+      <x>620</x>
+      <y>220</y>
+      <width>91</width>
       <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
-	color: white;	
-	border: 1px solid white;
+	color: #FAE6AA;	
+	border: 1px solid #FAE6AA;
+	font: 11pt &quot;MV Boli&quot;;
 }
 
 QPushButton:hover { 
-	background-color: rgba(0, 187, 193, .4);;
+	background-color: #FAE6AA;
+	color: black;
 }
 
 QPushButton:pressed { 
@@ -152,13 +158,15 @@ QPushButton:pressed {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">	QPushButton {
-	color: white;	
-	border: 1px solid white;
+     <string notr="true">QPushButton {
+	color: rgb(255, 56, 38);	
+	border: 1px solid rgb(255, 56, 38);
+	font: 12pt &quot;MV Boli&quot;;
 }
 
 QPushButton:hover { 
-	background-color: rgba(243, 167, 30, .4);;
+	background-color: rgb(255, 56, 38);
+	color: white;
 }
 
 QPushButton:pressed { 
