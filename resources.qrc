@@ -25,5 +25,6 @@
         <file>pin.png</file>
         <file>taco.png</file>
         <file>taco_h.png</file>
+        <file>14.png</file>
     </qresource>
 </RCC>

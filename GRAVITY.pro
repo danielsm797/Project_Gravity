@@ -34,7 +34,8 @@ SOURCES += \
     planet.cpp \
     level.cpp \
     velocity.cpp \
-    physics.cpp
+    physics.cpp \
+    targetbarrier.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +47,8 @@ HEADERS += \
     planet.h \
     level.h \
     velocity.h \
-    physics.h
+    physics.h \
+    targetbarrier.h
 
 FORMS += \
         mainwindow.ui \
