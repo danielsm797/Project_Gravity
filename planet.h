@@ -1,7 +1,8 @@
 #ifndef PLANET_H
 #define PLANET_H
 
-
+#include <QDebug>
+#include <QMediaPlayer>
 #include "physics.h"
 #include "element.h"
 
@@ -43,9 +44,9 @@ class Planet : public Element
 
         void setVel_y(float value);
 
-        void mov_vertical();
+        void mov_vertical(bool fl);
 
-        bool border(QGraphicsLineItem *l1, QGraphicsLineItem *l2, QGraphicsLineItem *l3, QGraphicsLineItem *l4);
+        bool border(QMediaPlayer *mp);
 
         float getRadio() const;
 

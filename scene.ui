@@ -385,7 +385,7 @@ QPushButton:pressed {
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 13pt &quot;MV Boli&quot;;
+    <string notr="true">font: 11pt &quot;MV Boli&quot;;
 color: #FAE6AA;</string>
    </property>
    <property name="text">

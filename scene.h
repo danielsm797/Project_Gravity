@@ -6,8 +6,10 @@
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
 #include <QGraphicsItem>
-#include <time.h>
+#include <QMediaPlayer>
 #include <fstream>
+#include <time.h>
+#include <QFontDatabase>
 #include "user.h"
 #include "planet.h"
 #include "level.h"
@@ -15,7 +17,7 @@
 #include "targetbarrier.h"
 #include "taco.h"
 
-#define LEVEL_NAME "Level_doc.txt"
+#define LEVEL_NAME "../GRAVITY/Level_doc.txt"
 
 namespace Ui
 {
@@ -48,9 +50,13 @@ class Scene : public QDialog
 
         void set_targets();
 
+        void set_powers();
+
         void read_level();
 
         void move_list();
+
+        void set_score();
 
         void delete_planet();
 
@@ -111,6 +117,8 @@ class Scene : public QDialog
         QVector<TargetBarrier *> targets;
 
         QVector<Level *> levels;
+
+        QVector<QMediaPlayer *> sounds;
 
         QGraphicsScene *gc;
 

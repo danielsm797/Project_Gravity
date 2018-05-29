@@ -20,6 +20,8 @@ class Level
 
         QVector<QString> barrier; // Obstaculos.
 
+        QVector<QString> powers; // Movimientos
+
     public:
 
         Level();
@@ -47,6 +49,10 @@ class Level
         int getNum_planets() const;
 
         void setNum_planets(int value);
+
+        QVector<QString> getPowers() const;
+
+        void setPowers(const QVector<QString> &value);
 };
 
 #endif // LEVEL_H

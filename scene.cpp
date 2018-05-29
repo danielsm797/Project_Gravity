@@ -25,46 +25,52 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
     ui->graphicsView->setScene(gc);
     gc->setSceneRect(0, 0, ui->graphicsView->width() - 8, ui->graphicsView->height() - 8);
 
+    // Agregamos los sonidos.
+    sounds.append(new QMediaPlayer());
+    sounds.last()->setMedia(QUrl("qrc:/Sounds/tac.mp3"));
+
+    sounds.append(new QMediaPlayer());
+    sounds.last()->setMedia(QUrl("qrc:/Sounds/tac.mp3"));
+
+    sounds.append(new QMediaPlayer());
+    sounds.last()->setMedia(QUrl("qrc:/Sounds/exp.mp3"));
+
+    sounds.append(new QMediaPlayer());
+    sounds.last()->setMedia(QUrl("qrc:/Sounds/abs.mp3"));
+
+    sounds.append(new QMediaPlayer());
+    sounds.last()->setMedia(QUrl("qrc:/Sounds/par.mp3"));
+
     QPen myPen = QPen(Qt::white);
-    QPen pen = QPen(Qt::yellow);
+    myPen.setStyle(Qt::DashLine);
 
     QLineF topLine(gc->sceneRect().topLeft(), gc->sceneRect().topRight());
-    l1 = new QGraphicsLineItem(topLine);
-    l1->setPen(pen);
 
     QLineF leftLine(gc->sceneRect().topLeft(), gc->sceneRect().bottomLeft());
-    l2 = new QGraphicsLineItem(leftLine);
-    l2->setPen(pen);
 
     QLineF rightLine(gc->sceneRect().topRight(), gc->sceneRect().bottomRight());
 
     QLineF bottomLine(gc->sceneRect().bottomLeft(), gc->sceneRect().bottomRight());
 
     QLineF separator(QPointF(gc->sceneRect().bottomRight().x() - 50, gc->sceneRect().topRight().y()), QPointF(gc->sceneRect().bottomRight().x() - 50, gc->sceneRect().bottomRight().y()));
-    l3 = new QGraphicsLineItem(separator);
-    l3->setPen(pen);
 
     QLineF separator_(QPointF(gc->sceneRect().bottomLeft().x(), gc->sceneRect().bottomLeft().y() - 50), QPointF(gc->sceneRect().bottomRight().x() - 50, gc->sceneRect().bottomRight().y() - 50));
-    l4 = new QGraphicsLineItem(separator_);
-    l4->setPen(pen);
-
-    // Agregamos los items.
-    gc->addItem(l1);
-    gc->addItem(l2);
-    gc->addItem(l3);
-    gc->addItem(l4);
 
     // Agregamos las lineas.
     gc->addLine(rightLine, myPen);
     gc->addLine(bottomLine, myPen);
+    gc->addLine(leftLine, myPen);
+    gc->addLine(topLine, myPen);
+    gc->addLine(separator, myPen);
+    gc->addLine(separator_, myPen);
 
     set_tacos();
-
     read_level();
 
     set_planets();
     set_barriers();
     set_targets();
+    set_powers();
 
     tim_hor = new QTimer();
     connect(tim_hor, SIGNAL(timeout()), this, SLOT(hor_move()));
@@ -129,6 +135,8 @@ void Scene::hor_move()
             tim_cue->start(3);
 
             tacos.first()->set_position();
+
+            sounds.first()->play();
         }
         else
         {
@@ -153,20 +161,25 @@ void Scene::ver_move()
     if (tacos.last()->collidesWithItem(planets.first()))
     {
         tim_ver->stop();
+        tim_hor->stop();
 
         tacos.last()->setPos_x(781);
-
         tacos.last()->set_position();
 
-        planets.first()->setVel_x(-300);
+        tacos.first()->setPos_y(585);
+        tacos.first()->set_position();
 
-        tim_cue->start(3);
+        sounds.at(1)->play();
+
+        planets.first()->setVel_x(-900);
+
+        tim_cue->start(13);
     }
 }
 
 void Scene::mov_planet()
 {
-    planets.first()->mov_vertical();
+    planets.first()->mov_vertical(is);
 
     if (planets.first()->getPos_y() <= 74 && !limit) // Validamos si llegó al limite.
     {
@@ -175,7 +188,7 @@ void Scene::mov_planet()
         tim_cue->stop();
 
         QTimer * tim = vel.getTimer();
-        tim->start(1);
+        tim->start(10);
         vel.exec();
 
         tim_ver->start(50);
@@ -189,12 +202,53 @@ void Scene::mov_planet()
     if (is)
     {
         // validamos si colisiono con una pared.
-       bool resp = planets.first()->border(l1, l2, l3, l4);
+        bool resp = planets.first()->border(sounds.last());
 
-       if (resp)
-       {
-           tim_cue->stop();
-       }
+        if (resp)
+        {
+            tim_cue->stop();
+
+            delete_planet();
+        }
+
+        // validamos si colisionó con un obstaculo.
+        QVector<TargetBarrier *>::iterator it;
+        it = tarbar.begin();
+
+        for (; it != tarbar.end(); it++)
+        {
+            TargetBarrier *tg = *(it);
+
+            if (tg->collidesWithItem(planets.first()))
+            {
+                // Restamos o sumamos los puntos.
+                if (tg->getType() == 2)
+                {
+                    // qDebug() << planets.first()->getPos_x() << " - " << tg->getPos_x() << ", " << planets.first()->getPos_y() << " - " << tg->getPos_y();
+
+                    if ((tg->getPos_x() - planets.first()->getPos_x()) < 20 && (tg->getPos_y() - planets.first()->getPos_y()) < 20)
+                    {
+                        score.first() += tg->getScore();
+
+                        gc->removeItem(tg); // Eliminamos el objetivo.
+
+                        tarbar.removeOne(tg);
+                    }
+                }
+                else
+                {
+                    sounds.at(2)->play();
+
+                    score.first() -= tg->getScore();
+
+                    // Rebote.
+                }
+
+                set_score();
+
+                return;
+            }
+        }
     }
 }
 
@@ -277,9 +331,35 @@ void Scene::set_targets()
         QString y = dta.at(1);
         QString s = dta.at(2);
 
-        tarbar.append(new TargetBarrier(x.toInt(), y.toInt() , 32, 32, ":/Img/14.png", s.toInt(), 2));
-        gc->addItem(tarbar.last());
-        tarbar.last()->set_position();
+        if (s.toInt() != 3 && s.toInt() != 4)
+        {
+            tarbar.append(new TargetBarrier(x.toInt(), y.toInt() , 32, 32, ":/Img/14.png", s.toInt(), 2));
+            gc->addItem(tarbar.last());
+            tarbar.last()->set_position();
+        }
+    }
+}
+
+void Scene::set_powers()
+{
+    QVector<QString> powers = levels.at(current_level)->getPowers();
+
+    for (int i = 0; i < powers.length(); i++)
+    {
+        QStringList dta = powers.at(i).split('-');
+
+        QString x = dta.at(0);
+        QString y = dta.at(1);
+        QString s = dta.at(2);
+
+        if (s.toInt() == 3 || s.toInt() == 4)
+        {
+            QString root = s.toInt() == 3 ? ":/Img/mov1.png" : ":/Img/mov2.png";
+
+            tarbar.append(new TargetBarrier(x.toInt(), y.toInt() , 24, 24, root, 0, s.toInt()));
+            gc->addItem(tarbar.last());
+            tarbar.last()->set_position();
+        }
     }
 }
 
@@ -323,8 +403,11 @@ void Scene::read_level()
             one = data.at(0);
             levels.at(ind)->setId_level(one.toInt());
 
-            QString level_name = "Level ";
-            ui->lbl_level->setText(level_name.append(one));
+            if (ind == 0)
+            {
+                QString level_name = "Level ";
+                ui->lbl_level->setText(level_name.append(one));
+            }
 
             one = data.at(1);
             levels.at(ind)->setCoe_res(one.toFloat());
@@ -361,6 +444,19 @@ void Scene::read_level()
             }
 
             levels.at(ind)->setBarrier(obj);
+
+            // Obtenemos los poderes.
+            obj.clear();
+            one = dta.last();
+            data = one.split(',');
+
+            QStringList::iterator k = data.begin();
+            for(; k != data.end(); k++)
+            {
+                obj.append(*k);
+            }
+
+            levels.at(ind)->setPowers(obj);
         }
     }
 }
@@ -375,8 +471,17 @@ void Scene::move_list()
     }
 }
 
+void Scene::set_score()
+{
+    ui->lbl_score1->setText(QString::number(score.first()));
+
+    ui->lbl_score2->setText(QString::number(score.last()));
+}
+
 void Scene::delete_planet()
 {
+    sounds.at(3)->play();
+
     gc->removeItem(planets.first());
 
     planets.removeAt(0);
@@ -429,7 +534,7 @@ void Scene::on_btn_start_clicked()
 
             // Inicializamos el timer del pin.
             QTimer * tim = vel.getTimer();
-            tim->start(1);
+            tim->start(10);
             vel.exec();
 
             // Obtenemos la velocidad.

@@ -60,6 +60,16 @@ void Level::setNum_planets(int value)
     num_planets = value;
 }
 
+QVector<QString> Level::getPowers() const
+{
+    return powers;
+}
+
+void Level::setPowers(const QVector<QString> &value)
+{
+    powers = value;
+}
+
 Level::Level()
 {
 

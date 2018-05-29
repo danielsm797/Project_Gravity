@@ -13,18 +13,29 @@
         <file>11.png</file>
         <file>12.png</file>
         <file>13.png</file>
+        <file>14.png</file>
         <file>asteroid.png</file>
         <file>asteroid-1.png</file>
         <file>asteroid-2.png</file>
         <file>back.png</file>
         <file>back-game.jpg</file>
         <file>back-modal.jpg</file>
-        <file>colors.png</file>
-        <file>comet.png</file>
         <file>icon.png</file>
         <file>pin.png</file>
         <file>taco.png</file>
         <file>taco_h.png</file>
-        <file>14.png</file>
+        <file>colors.png</file>
+        <file>comet.png</file>
+        <file>mov1.png</file>
+        <file>mov2.png</file>
+    </qresource>
+    <qresource prefix="/Sounds">
+        <file>abs.mp3</file>
+        <file>exp.mp3</file>
+        <file>par.mp3</file>
+        <file>tac.mp3</file>
+    </qresource>
+    <qresource prefix="/Fonts">
+        <file>SpecialElite-Regular.ttf</file>
     </qresource>
 </RCC>

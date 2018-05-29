@@ -4,7 +4,7 @@
 #include <QVector>
 #include <math.h>
 
-#define Dt 0.1
+#define Dt 0.01
 
 class Physics
 {

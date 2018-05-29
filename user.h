@@ -1,7 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
-#define DOC_NAME "Users_doc.txt"
+#define DOC_NAME "../GRAVITY/Users_doc.txt"
 
 #include <QString>
 #include <QStringList>

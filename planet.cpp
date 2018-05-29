@@ -30,7 +30,7 @@ void Planet::setVel_y(float value)
     vel_y = value;
 }
 
-void Planet::mov_vertical()
+void Planet::mov_vertical(bool fl)
 {
     float mag = fis->mag_vel(vel_x, vel_y);
 
@@ -42,18 +42,26 @@ void Planet::mov_vertical()
 
     QVector<float> pos_(fis->cal_pos(getPos_x(), y_aux, vel_x, vel_y, ace.at(0), ace.at(1))); // Posición auxiliar.
 
-    setPos_x(pos.at(0));
-
-    if (pos_.at(1) < y_aux)
+    if (!fl)
     {
-        setPos_y(pos.at(1) + ((getPos_y()- pos.at(1)) + 1));
+        setPos_x(pos.at(0));
+
+        if (pos_.at(1) < y_aux)
+        {
+            setPos_y(pos.at(1) + ((getPos_y()- pos.at(1)) + 1));
+        }
+        else
+        {
+            setPos_y(pos.at(1) - ((pos.at(1) - getPos_y()) + 1));
+        }
+
+        y_aux = pos_.at(1);
     }
     else
     {
-        setPos_y(pos.at(1) - ((pos.at(1) - getPos_y()) + 1));
+        setPos_x(pos.at(0));
+        setPos_y(pos.at(1));
     }
-
-    y_aux = pos_.at(1);
 
     QVector<float> vel(fis->cal_vel(vel_x, vel_y, ace.at(0), ace.at(1)));
 
@@ -64,21 +72,46 @@ void Planet::mov_vertical()
     set_position();
 }
 
-bool Planet::border(QGraphicsLineItem *l1, QGraphicsLineItem *l2, QGraphicsLineItem *l3, QGraphicsLineItem *l4)
+bool Planet::border(QMediaPlayer *mp)
 {
     bool resp = false;
 
-    if (this->collidesWithItem(l1) || this->collidesWithItem(l4))
+    if (getPos_x() < 11)
     {
-        vel_y *= (-1 * coe_re);
+        setPos_x(11);
 
-        resp = true;
-    }
-    else if (this->collidesWithItem(l2) || this->collidesWithItem(l3))
-    {
         vel_x *= (-1 * coe_re);
 
-        resp = true;
+        mp->play();
+    }
+    else if (getPos_x() > 700)
+    {
+        setPos_x(700);
+
+        vel_x *= (-1 * coe_re);
+
+        mp->play();
+    }
+    else if (getPos_y() < 11)
+    {
+        setPos_y(11);
+
+        vel_y *= (-1 * coe_re);
+
+        mp->play();
+    }
+    else if (getPos_y() > 540)
+    {
+        setPos_y(540);
+
+        vel_y *= (-1 * coe_re);
+
+        mp->play();
+    }
+
+    if (abs(vel_x) < 1 || abs(vel_y) < 1)
+    {
+        resp = true; // Terminó.
     }
 
     return resp;
@@ -100,7 +133,7 @@ Planet::Planet(int pos_x_, int pos_y_, int width_, int height_, QString root_, f
 
     coe_fr = coe_fr_;
 
-    coe_re = 0.5;
+    coe_re = 0.8;
 
     vel_x = 0;
 

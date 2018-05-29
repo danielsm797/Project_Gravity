@@ -10,19 +10,19 @@ class TargetBarrier : public Element
 
         int score;
 
-        bool type; // 1 Barrera, 2 Objetivo.
+        int type; // 1 Barrera, 2 Objetivo, 3 move para, 4 move ondu.
 
     public:
 
-        TargetBarrier(int pos_x_, int pos_y_, int width_, int height_, QString root_, int score_, bool type_);
+        TargetBarrier(int pos_x_, int pos_y_, int width_, int height_, QString root_, int score_, int type_);
 
         int getScore() const;
 
         void setScore(int value);
 
-        bool getType() const;
+        int getType() const;
 
-        void setType(bool value);
+        void setType(int value);
 };
 
 #endif // TARGETBARRIER_H
