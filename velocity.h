@@ -7,48 +7,54 @@
 
 namespace Ui
 {
-    class Velocity;
+class Velocity;
 }
 
 class Velocity : public QDialog
 {
     Q_OBJECT
 
-    public:
+public:
 
-        explicit Velocity(QWidget *parent = 0);
+    explicit Velocity(QWidget *parent = 0);
 
-        void keyPressEvent(QKeyEvent *e_);
+    void keyPressEvent(QKeyEvent *e_);
 
-        ~Velocity();
+    ~Velocity();
 
-        QTimer *getTimer() const;
+    QTimer *getTimer() const;
 
-        void setTimer(QTimer *value);
+    void setTimer(QTimer *value);
 
-        float getVel_x() const;
+    float getVel_x() const;
 
-        void setVel_x(float value);
+    void setVel_x(float value);
 
-        float getVel_y() const;
+    float getVel_y() const;
 
-        void setVel_y(float value);
+    void setVel_y(float value);
 
-    public slots:
+    bool getY() const;
 
-        void move_pin();
+    void setY(bool value);
 
-    private:
+public slots:
 
-        bool left;
+    void move_pin();
 
-        float vel_x;
+private:
 
-        float vel_y;
+    bool left;
 
-        QTimer *timer;
+    float vel_x;
 
-        Ui::Velocity *ui;
+    float vel_y;
+
+    bool y;
+
+    QTimer *timer;
+
+    Ui::Velocity *ui;
 };
 
 #endif // VELOCITY_H

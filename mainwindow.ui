@@ -176,7 +176,7 @@ QPushButton:pressed {
 }</string>
     </property>
     <property name="text">
-     <string>Cerrar</string>
+     <string>Close</string>
     </property>
     <property name="flat">
      <bool>true</bool>

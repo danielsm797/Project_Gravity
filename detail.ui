@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Detail</class>
+ <widget class="QDialog" name="Detail">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>262</width>
+    <height>229</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">border:1px solid white;
+background-color: black;</string>
+  </property>
+  <widget class="QPushButton" name="btn_next">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>180</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	color: #FAE6AA;	
+	border: 1px solid #FAE6AA;
+	background-color: transparent;
+	font: 11pt &quot;MV Boli&quot;;
+}
+
+QPushButton:hover { 
+	background-color: #FAE6AA;
+	color: black;
+}
+
+QPushButton:pressed { 
+	color: #F3A71E;
+	border: 1px solid #F3A71E;
+	background-color: rgba(0, 0, 0, .4);
+}</string>
+   </property>
+   <property name="text">
+    <string>Next level</string>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_close">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>180</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	color: rgb(255, 56, 38);	
+	border: 1px solid rgb(255, 56, 38);
+background-color: transparent;
+	font: 12pt &quot;MV Boli&quot;;
+}
+
+QPushButton:hover { 
+	background-color: rgb(255, 56, 38);
+	color: white;
+}
+
+QPushButton:pressed { 
+	color: #F3A71E;
+	border: 1px solid #F3A71E;
+	background-color: rgba(0, 0, 0, .4);
+}</string>
+   </property>
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_back">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>261</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Img/back-modal.jpg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_username">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>90</y>
+     <width>101</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 10pt &quot;MV Boli&quot;;
+color: white;
+border: 0px;
+background-color: transparent;</string>
+   </property>
+   <property name="text">
+    <string>Score player 1:</string>
+   </property>
+  </widget>
+  <widget class="QLCDNumber" name="lcd_score1">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>110</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: 0px;
+color: white;
+background-color: transparent;</string>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_username_2">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>90</y>
+     <width>101</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 10pt &quot;MV Boli&quot;;
+color: white;
+border: 0px;
+background-color: transparent;</string>
+   </property>
+   <property name="text">
+    <string>Score player 2:</string>
+   </property>
+  </widget>
+  <widget class="QLCDNumber" name="lcd_score2">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>110</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: 0px;
+color: white;
+background-color: transparent;</string>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_info">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>20</y>
+     <width>191</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 12pt &quot;MV Boli&quot;;
+color: #FAE6AA;
+border: 0px;
+background-color: transparent;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <zorder>lbl_back</zorder>
+  <zorder>btn_next</zorder>
+  <zorder>btn_close</zorder>
+  <zorder>lbl_username</zorder>
+  <zorder>lcd_score1</zorder>
+  <zorder>lbl_username_2</zorder>
+  <zorder>lcd_score2</zorder>
+  <zorder>lbl_info</zorder>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>btn_close</sender>
+   <signal>clicked()</signal>
+   <receiver>Detail</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>137</x>
+     <y>297</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>146</x>
+     <y>316</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

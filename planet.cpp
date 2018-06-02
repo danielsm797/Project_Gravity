@@ -127,6 +127,26 @@ void Planet::setRadio(float value)
     radio = value;
 }
 
+float Planet::getCoe_fr() const
+{
+    return coe_fr;
+}
+
+void Planet::setCoe_fr(float value)
+{
+    coe_fr = value;
+}
+
+float Planet::getY_aux() const
+{
+    return y_aux;
+}
+
+void Planet::setY_aux(float value)
+{
+    y_aux = value;
+}
+
 Planet::Planet(int pos_x_, int pos_y_, int width_, int height_, QString root_, float ace_gra_, float coe_fr_) : Element(pos_x_, pos_y_, width_, height_, root_)
 {
     ace_gra = ace_gra_;

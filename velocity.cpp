@@ -11,6 +11,8 @@ Velocity::Velocity(QWidget *parent) : QDialog(parent), ui(new Ui::Velocity)
 
     vel_x = 0;
 
+    y = true;
+
     timer = new QTimer();
 
     connect(timer, SIGNAL(timeout()), this, SLOT(move_pin()));
@@ -23,25 +25,74 @@ void Velocity::keyPressEvent(QKeyEvent *e_)
         timer->stop();
 
         // validamos en que posición X quedó al aguja.
-        if (ui->lbl_pin->x() <= 120)
+        if (ui->lbl_pin->x() < 80)
         {
-            if (vel_y == 0)
+            if (vel_y == 0 && y)
             {
-                vel_y = 350;
+                vel_y = 90;
+            }
+
+            if (!y)
+            {
+                vel_x = -300;
+
+                vel_y = 300;
             }
         }
-        else if (ui->lbl_pin->x() > 120 && ui->lbl_pin->x() <= 140)
+        else if (ui->lbl_pin->x() >= 80 && ui->lbl_pin->x() < 110)
         {
-            if (vel_y == 0)
+            if (vel_y == 0 && y)
             {
-                vel_y = 280;
+                vel_y = 15;
             }
-        }
-        else if (ui->lbl_pin->x() > 140 && ui->lbl_pin->x() <= 170)
-        {
-            if (vel_y == 0)
+
+            if (!y)
             {
+                vel_x = -200;
+
                 vel_y = 200;
+            }
+        }
+        else if (ui->lbl_pin->x() >= 110 && ui->lbl_pin->x() < 130)
+        {
+            if (vel_y == 0 && y)
+            {
+                vel_y = 60;
+            }
+
+            if (!y)
+            {
+                vel_x = -500;
+
+                vel_y = 500;
+            }
+        }
+        else if (ui->lbl_pin->x() >= 130 && ui->lbl_pin->x() < 160)
+        {
+            if (vel_y == 0 && y)
+            {
+                vel_y = 25;
+            }
+
+            if (!y)
+            {
+                vel_x = -400;
+
+                vel_y = 400;
+            }
+        }
+        else if (ui->lbl_pin->x() >= 160)
+        {
+            if (vel_y == 0 && y)
+            {
+                vel_y = 72;
+            }
+
+            if (!y)
+            {
+                vel_x = -385;
+
+                vel_y = 385;
             }
         }
 
@@ -60,7 +111,7 @@ void Velocity::move_pin()
 {
     if (!left)
     {
-        if (ui->lbl_pin->x() <= 160)
+        if (ui->lbl_pin->x() <= 180)
         {
             ui->lbl_pin->move(ui->lbl_pin->x() + 1, ui->lbl_pin->y());
         }
@@ -80,6 +131,16 @@ void Velocity::move_pin()
             left = false;
         }
     }
+}
+
+bool Velocity::getY() const
+{
+    return y;
+}
+
+void Velocity::setY(bool value)
+{
+    y = value;
 }
 
 float Velocity::getVel_y() const

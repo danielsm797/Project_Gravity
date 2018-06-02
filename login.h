@@ -11,68 +11,68 @@ using namespace std;
 
 namespace Ui
 {
-    class LogIn;
+class LogIn;
 }
 
 class LogIn : public QDialog
 {
     Q_OBJECT
 
-    public:
+public:
 
-        explicit LogIn(QWidget *parent = 0);
+    explicit LogIn(QWidget *parent = 0);
 
-        void add_pattern(QPushButton *pb, QString str);
+    void add_pattern(QPushButton *pb, QString str);
 
-        void show_message(int type_, QString mess_);
+    void show_message(int type_, QString mess_);
 
-        void clear();
+    void clear();
 
-        ~LogIn();
+    ~LogIn();
 
-    private slots:
+private slots:
 
-        void on_btn_login_clicked();
+    void on_btn_login_clicked();
 
-        void on_btn_new_clicked();
+    void on_btn_new_clicked();
 
-        void on_btn_start_clicked();
+    void on_btn_start_clicked();
 
-        void on_btn_pat_1_clicked();
+    void on_btn_pat_1_clicked();
 
-        void on_btn_pat_2_clicked();
+    void on_btn_pat_2_clicked();
 
-        void on_btn_pat_4_clicked();
+    void on_btn_pat_4_clicked();
 
-        void on_btn_pat_3_clicked();
+    void on_btn_pat_3_clicked();
 
-        void on_btn_pat_5_clicked();
+    void on_btn_pat_5_clicked();
 
-        void on_btn_pat_6_clicked();
+    void on_btn_pat_6_clicked();
 
-    public slots:
+public slots:
 
-        void receive_data(bool value);
+    void receive_data(bool value);
 
-    signals:
+signals:
 
-        void send_data(bool value);
+    void send_data(bool value);
 
-    private:
+private:
 
-        bool is_login;
+    bool is_login;
 
-        bool is_multiplayer;
+    bool is_multiplayer;
 
-        QVector<User *> users;
+    QVector<User *> users;
 
-        QString user_name;
+    QString user_name;
 
-        QString pattern;
+    QString pattern;
 
-        Scene sc;
+    Scene sc;
 
-        Ui::LogIn *ui;
+    Ui::LogIn *ui;
 };
 
 #endif // LOGIN_H

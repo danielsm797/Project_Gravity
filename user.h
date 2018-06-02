@@ -11,41 +11,41 @@ using namespace std;
 
 class User
 {
-    private:
+private:
 
-        int id_user;
+    int id_user;
 
-        int id_lastGame;
+    int id_lastGame;
 
-        bool exist;
+    bool exist;
 
-        QString user_name;
+    QString user_name;
 
-        QString password;
+    QString password;
 
-        QString dataf;
+    QString dataf;
 
-    public:
+public:
 
-        User();
+    User();
 
-        User(QString user_name_, QString password_);
+    User(QString user_name_, QString password_);
 
-        QString getUser_name() const;
+    QString getUser_name() const;
 
-        void read_file();
+    void read_file();
 
-        void save_user();
+    void save_user();
 
-        int getId_user() const;
+    int getId_user() const;
 
-        void setId_user(int value);
+    void setId_user(int value);
 
-        int getId_lastGame() const;
+    int getId_lastGame() const;
 
-        void setId_lastGame(int value);
+    void setId_lastGame(int value);
 
-        bool getExist() const;
+    bool getExist() const;
 };
 
 #endif // USER_H

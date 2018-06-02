@@ -6,38 +6,38 @@
 
 namespace Ui
 {
-    class MainWindow;
+class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    public:
+public:
 
-        explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = 0);
 
-        ~MainWindow();
+    ~MainWindow();
 
-    private slots:
+private slots:
 
-        void on_btn_multiplayer_clicked();
+    void on_btn_multiplayer_clicked();
 
-        void on_btn_singleplayer_clicked();
+    void on_btn_singleplayer_clicked();
 
-        void on_btn_next_clicked();
+    void on_btn_next_clicked();
 
-    signals:
+signals:
 
-        void open_login();
+    void open_login();
 
-    private:
+private:
 
-        bool is_multiplayer = false;
+    bool is_multiplayer = false;
 
-        Ui::MainWindow *ui;
+    Ui::MainWindow *ui;
 
-        LogIn li;
+    LogIn li;
 };
 
 #endif // MAINWINDOW_H

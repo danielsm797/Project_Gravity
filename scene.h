@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTimer>
+#include <QMessageBox>
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
 #include <QGraphicsItem>
@@ -10,127 +11,141 @@
 #include <fstream>
 #include <time.h>
 #include <QFontDatabase>
+#include <qmediaplaylist.h>
 #include "user.h"
 #include "planet.h"
 #include "level.h"
 #include "velocity.h"
 #include "targetbarrier.h"
+#include "detail.h"
 #include "taco.h"
 
 #define LEVEL_NAME "../GRAVITY/Level_doc.txt"
+#define GAME_NAME "../GRAVITY/Game_doc.txt"
 
-namespace Ui
-{
-    class Scene;
+namespace Ui{
+class Scene;
 }
 
 class Scene : public QDialog
 {
     Q_OBJECT
 
-    public:
+public:
 
-        explicit Scene(QWidget *parent = 0);
+    explicit Scene(QWidget *parent = 0);
 
-        ~Scene();
+    ~Scene();
 
-        User *getPlayer_1() const;
+    User *getPlayer_1() const;
 
-        void setPlayer_1(User *value);
+    void setPlayer_1(User *value);
 
-        User *getPlayer_2() const;
+    User *getPlayer_2() const;
 
-        void setPlayer_2(User *value);
+    void setPlayer_2(User *value);
 
-        void set_tacos();
+    void set_tacos();
 
-        void set_planets();
+    void set_planets();
 
-        void set_barriers();
+    void set_barriers();
 
-        void set_targets();
+    void set_powers();
 
-        void set_powers();
+    void read_level();
 
-        void read_level();
+    void move_list();
 
-        void move_list();
+    void set_score();
 
-        void set_score();
+    void delete_planet();
 
-        void delete_planet();
+    void set_targets();
 
-    signals:
+    bool write_file(QString dta);
 
-        void open(bool is_multi);
+    void get_lastId();
 
-    public slots:
+    int getId_scene() const;
 
-        void rec_open(bool is_multi);
+    void setId_scene(int value);
 
-    private slots:
+signals:
 
-        void on_btn_start_clicked();
+    void open(bool is_multi);
 
-        void hor_move();
+public slots:
 
-        void ver_move();
+    void rec_open(bool is_multi);
 
-        void mov_planet();
+private slots:
 
-    private:
+    void on_btn_start_clicked();
 
-        int id_scene;
+    void hor_move();
 
-        bool is_multiplayer;
+    void ver_move();
 
-        bool is_start; // Inicio el juego o lo pausó.
+    void mov_planet();
 
-        bool next; // Siguiente objeto.
+    void on_btn_save_clicked();
 
-        bool limit; // Llego al limite.
+private:
 
-        bool is; // Entró al scene.
+    int id_scene;
 
-        int current_level;
+    bool is_multiplayer;
 
-        QVector<int> score; // Puntos.
+    bool is_start; // Inicio el juego o lo pausó.
 
-        User *player_1;
+    bool next; // Siguiente objeto.
 
-        User *player_2;
+    bool limit; // Llego al limite.
 
-        QGraphicsLineItem *l1;
+    bool is; // Entró al scene.
 
-        QGraphicsLineItem *l2;
+    int current_level;
 
-        QGraphicsLineItem *l3;
+    QVector<int> score; // Puntos.
 
-        QGraphicsLineItem *l4;
+    User *player_1;
 
-        QVector<Taco *> tacos;
+    User *player_2;
 
-        QVector<Planet *> planets;
+    QGraphicsLineItem *l1;
 
-        QVector<TargetBarrier *> tarbar;
+    QGraphicsLineItem *l2;
 
-        QVector<TargetBarrier *> targets;
+    QGraphicsLineItem *l3;
 
-        QVector<Level *> levels;
+    QGraphicsLineItem *l4;
 
-        QVector<QMediaPlayer *> sounds;
+    QVector<Taco *> tacos;
 
-        QGraphicsScene *gc;
+    QVector<Planet *> planets;
 
-        QTimer *tim_hor;
+    QVector<TargetBarrier *> tarbar;
 
-        QTimer *tim_ver;
+    QVector<Level *> levels;
 
-        QTimer *tim_cue;
+    QVector<QMediaPlayer *> sounds;
 
-        Velocity vel;
+    QMediaPlayer *sou_back;
 
-        Ui::Scene *ui;
+    QGraphicsScene *gc;
+
+    QTimer *tim_hor;
+
+    QTimer *tim_ver;
+
+    QTimer *tim_cue;
+
+    Velocity vel;
+
+    Detail det;
+
+    Ui::Scene *ui;
 };
 
 #endif // SCENE_H

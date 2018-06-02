@@ -3,26 +3,33 @@
 
 
 #include "element.h"
+#include <QMediaPlayer>
 
 class TargetBarrier : public Element
 {
-    private:
+private:
 
-        int score;
+    int score;
 
-        int type; // 1 Barrera, 2 Objetivo, 3 move para, 4 move ondu.
+    int type; // 1 Barrera, 2 Objetivo, 3 move para, 4 move ondu.
 
-    public:
+    QMediaPlayer *sound;
 
-        TargetBarrier(int pos_x_, int pos_y_, int width_, int height_, QString root_, int score_, int type_);
+public:
 
-        int getScore() const;
+    TargetBarrier(int pos_x_, int pos_y_, int width_, int height_, QString root_, int score_, int type_);
 
-        void setScore(int value);
+    int getScore() const;
 
-        int getType() const;
+    void setScore(int value);
 
-        void setType(int value);
+    int getType() const;
+
+    void setType(int value);
+
+    void play_sound();
+
+    ~TargetBarrier();
 };
 
 #endif // TARGETBARRIER_H

@@ -6,47 +6,47 @@
 
 class Element : public QGraphicsItem
 {
-    private:
+private:
 
-        int pos_x;
+    int pos_x;
 
-        int pos_y;
+    int pos_y;
 
-        int width;
+    int width;
 
-        int height;
+    int height;
 
-        QString root;
+    QString root;
 
-    public:
+public:
 
-        Element(int pos_x_, int pos_y_, int width_, int height_, QString root_);
+    Element(int pos_x_, int pos_y_, int width_, int height_, QString root_);
 
-        QRectF boundingRect() const;
+    QRectF boundingRect() const;
 
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-        int getPos_x() const;
+    int getPos_x() const;
 
-        void setPos_x(int value);
+    void setPos_x(int value);
 
-        int getPos_y() const;
+    int getPos_y() const;
 
-        void setPos_y(int value);
+    void setPos_y(int value);
 
-        int getWidth() const;
+    int getWidth() const;
 
-        void setWidth(int value);
+    void setWidth(int value);
 
-        int getHeight() const;
+    int getHeight() const;
 
-        void setHeight(int value);
+    void setHeight(int value);
 
-        QString getRoot() const;
+    QString getRoot() const;
 
-        void setRoot(const QString &value);
+    void setRoot(const QString &value);
 
-        void set_position();
+    void set_position();
 };
 
 #endif // ELEMENT_H

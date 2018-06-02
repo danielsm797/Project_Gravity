@@ -17,13 +17,16 @@
    <iconset resource="resources.qrc">
     <normaloff>:/Img/icon.png</normaloff>:/Img/icon.png</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>60</y>
-     <width>111</width>
-     <height>61</height>
+     <y>70</y>
+     <width>131</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -33,11 +36,14 @@
   <widget class="QLabel" name="lbl_pin">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>90</y>
+     <x>180</x>
+     <y>80</y>
      <width>16</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: transparent;</string>
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Img/pin.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -53,7 +59,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: white;
+    <string notr="true">color:white;
 font: 12pt &quot;MV Boli&quot;;</string>
    </property>
    <property name="text">

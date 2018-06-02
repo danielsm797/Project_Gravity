@@ -50,16 +50,6 @@ void Level::setBarrier(const QVector<QString> &value)
     barrier = value;
 }
 
-int Level::getNum_planets() const
-{
-    return num_planets;
-}
-
-void Level::setNum_planets(int value)
-{
-    num_planets = value;
-}
-
 QVector<QString> Level::getPowers() const
 {
     return powers;
@@ -68,6 +58,16 @@ QVector<QString> Level::getPowers() const
 void Level::setPowers(const QVector<QString> &value)
 {
     powers = value;
+}
+
+QVector<QString> Level::getPlanets() const
+{
+    return planets;
+}
+
+void Level::setPlanets(const QVector<QString> &value)
+{
+    planets = value;
 }
 
 Level::Level()

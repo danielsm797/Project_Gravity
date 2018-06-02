@@ -36,7 +36,8 @@ SOURCES += \
     level.cpp \
     velocity.cpp \
     physics.cpp \
-    targetbarrier.cpp
+    targetbarrier.cpp \
+    detail.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -49,17 +50,20 @@ HEADERS += \
     level.h \
     velocity.h \
     physics.h \
-    targetbarrier.h
+    targetbarrier.h \
+    detail.h
 
 FORMS += \
         mainwindow.ui \
     login.ui \
     scene.ui \
-    velocity.ui
+    velocity.ui \
+    detail.ui
 
 RESOURCES += \
     resources.qrc
 
 DISTFILES += \
     Users_doc.txt \
-    Level_doc.txt
+    Level_doc.txt \
+    Game_doc.txt

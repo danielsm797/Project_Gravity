@@ -6,53 +6,53 @@
 
 class Level
 {
-    private:
+private:
 
-        int id_level;
+    int id_level;
 
-        int num_planets;
+    float coe_res;
 
-        float coe_res;
+    float coe_vis;
 
-        float coe_vis;
+    QVector<QString> targets; // Objetivos.
 
-        QVector<QString> targets; // Objetivos.
+    QVector<QString> barrier; // Obstaculos.
 
-        QVector<QString> barrier; // Obstaculos.
+    QVector<QString> powers; // Movimientos
 
-        QVector<QString> powers; // Movimientos
+    QVector<QString> planets; // Planetas.
 
-    public:
+public:
 
-        Level();
+    Level();
 
-        int getId_level() const;
+    int getId_level() const;
 
-        void setId_level(int value);
+    void setId_level(int value);
 
-        float getCoe_res() const;
+    float getCoe_res() const;
 
-        void setCoe_res(float value);
+    void setCoe_res(float value);
 
-        float getCoe_vis() const;
+    float getCoe_vis() const;
 
-        void setCoe_vis(float value);
+    void setCoe_vis(float value);
 
-        QVector<QString> getTargets() const;
+    QVector<QString> getTargets() const;
 
-        void setTargets(const QVector<QString> &value);
+    void setTargets(const QVector<QString> &value);
 
-        QVector<QString> getBarrier() const;
+    QVector<QString> getBarrier() const;
 
-        void setBarrier(const QVector<QString> &value);
+    void setBarrier(const QVector<QString> &value);
 
-        int getNum_planets() const;
+    QVector<QString> getPowers() const;
 
-        void setNum_planets(int value);
+    void setPowers(const QVector<QString> &value);
 
-        QVector<QString> getPowers() const;
+    QVector<QString> getPlanets() const;
 
-        void setPowers(const QVector<QString> &value);
+    void setPlanets(const QVector<QString> &value);
 };
 
 #endif // LEVEL_H
