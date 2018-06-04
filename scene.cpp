@@ -586,13 +586,35 @@ void Scene::get_lastId()
         return;
     }
 
+    ids_game.clear();
+
     QStringList list = str.split("|"); // Todos los registros.
-    QString dta = list.last();
 
-    QStringList list_dta = dta.split("@");
-    QString id = list_dta.first();
+    for (int i = 0; i < list.length(); i++)
+    {
+        QString dta = list.at(i);
 
-    id_scene = id.toInt() + 1;
+        QStringList list_dta = dta.split("@");
+
+        QString id = list_dta.first();
+
+        ids_game.append(id.toInt());
+    }
+
+    // Obtenemos el mayor.
+    int id_mayor = 0;
+    for (int j = 0; j < ids_game.length(); j++)
+    {
+        if (ids_game.at(j) > id_mayor)
+        {
+            id_mayor = ids_game.at(j);
+        }
+    }
+
+    if (id_scene == 0)
+    {
+        id_scene = id_mayor + 1;
+    }
 }
 
 User *Scene::getPlayer_1() const
@@ -668,10 +690,8 @@ void Scene::on_btn_save_clicked()
         return;
     }
 
-    if (id_scene == 0)
-    {
-        get_lastId(); // Obtenemos el último id.
-    }
+    // Obtenemos el último id.
+    get_lastId();
 
     tim_hor->stop();
     tim_ver->stop();
@@ -682,6 +702,37 @@ void Scene::on_btn_save_clicked()
     */
 
     // Validamos que si el id existe.
+    int over = 1;
+
+    QVector<int>::iterator p;
+    p = ids_game.begin();
+    for (; p != ids_game.end(); p++)
+    {
+        if (*p == id_scene)
+        {
+            // Preguntar si quiere sobreescribir el juego.
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(this, "Gravity", "Esta partida ya se encuentra guardada, ¿Desea sobreescribira?", QMessageBox::Yes | QMessageBox::No);
+
+            if (reply == QMessageBox::Yes)
+            {
+                over = 2;
+            }
+            else
+            {
+                over = 3;
+            }
+        }
+    }
+
+    if (over == 3)
+    {
+        tim_hor->start(40);
+        tim_ver->start(50);
+        tim_cue->start(5);
+
+        return;
+    }
 
     // Insertamos los planetas.
     QString dta = "";
@@ -701,17 +752,15 @@ void Scene::on_btn_save_clicked()
     {
         Planet *p = *it;
 
-        dta.append(QString::number(p->getPos_x()).append("-")); // Posición en X
-        dta.append(QString::number(p->getPos_x()).append("-")); // Posición en Y
-        dta.append(QString::number(p->getVel_x()).append("-")); // Velocidad en X
-        dta.append(QString::number(p->getVel_y()).append("-")); // Velocidad en Y
-        dta.append(QString::number(p->getCoe_fr()).append("-")); // Coeficiente de restitución
-        dta.append(QString::number(p->getAce_gra()).append("-")); // Aceleración de la graverdad.
+        dta.append(QString::number(p->getPos_x()).append(";")); // Posición en X
+        dta.append(QString::number(p->getPos_y()).append(";")); // Posición en Y
+        dta.append(QString::number(p->getVel_x()).append(";")); // Velocidad en X
+        dta.append(QString::number(p->getVel_y()).append(";")); // Velocidad en Y
+        dta.append(QString::number(p->getCoe_fr()).append(";")); // Coeficiente de restitución
+        dta.append(QString::number(p->getAce_gra()).append(";")); // Aceleración de la graverdad.
         dta.append(QString::number(p->getY_aux())); // Posición Y auxiliar.z
 
         dta.append(",");
-
-        // delete p;
     }
 
     dta.remove(dta.length() - 1, 1);
@@ -725,7 +774,7 @@ void Scene::on_btn_save_clicked()
     {
         Taco *t = *i;
 
-        dta.append(QString::number(t->getPos_x()).append("-")); // Posición en X
+        dta.append(QString::number(t->getPos_x()).append(";")); // Posición en X
         dta.append(QString::number(t->getPos_y())); // Posición en Y
 
         dta.append(",");
@@ -750,24 +799,24 @@ void Scene::on_btn_save_clicked()
 
         if (tb->getType() == 1)
         {
-            tar_s.append(QString::number(tb->getPos_x()).append("-")); // Posición en X
-            tar_s.append(QString::number(tb->getPos_y()).append("-")); // Posición en Y
+            tar_s.append(QString::number(tb->getPos_x()).append(";")); // Posición en X
+            tar_s.append(QString::number(tb->getPos_y()).append(";")); // Posición en Y
             tar_s.append(QString::number(tb->getScore())); // Puntos
 
             tar_s.append(",");
         }
         else if (tb->getType() == 2)
         {
-            bar_s.append(QString::number(tb->getPos_x()).append("-")); // Posición en X
-            bar_s.append(QString::number(tb->getPos_y()).append("-")); // Posición en Y
+            bar_s.append(QString::number(tb->getPos_x()).append(";")); // Posición en X
+            bar_s.append(QString::number(tb->getPos_y()).append(";")); // Posición en Y
             bar_s.append(QString::number(tb->getScore())); // Puntos
 
             bar_s.append(",");
         }
         else
         {
-            pow_s.append(QString::number(tb->getPos_x()).append("-")); // Posición en X
-            pow_s.append(QString::number(tb->getPos_y()).append("-")); // Posición en Y
+            pow_s.append(QString::number(tb->getPos_x()).append(";")); // Posición en X
+            pow_s.append(QString::number(tb->getPos_y()).append(";")); // Posición en Y
             pow_s.append(QString::number(tb->getType())); // Tipo
 
             pow_s.append(",");
@@ -781,6 +830,24 @@ void Scene::on_btn_save_clicked()
     dta.append(tar_s.append("@"));
     dta.append(bar_s.append("@"));
     dta.append(pow_s);
+
+    // Si estamos sobreescribiendo, elimamos el que ya está.
+    if (over == 2)
+    {
+        if (dta.at(0) == '|')
+        {
+            dta.remove(0, 1);
+        }
+
+        QString d = remove_game();
+
+        if (!d.isEmpty())
+        {
+            d.push_front('|');
+        }
+
+        dta.append(d);
+    }
 
     bool resp = write_file(dta);
 
@@ -804,4 +871,47 @@ int Scene::getId_scene() const
 void Scene::setId_scene(int value)
 {
     id_scene = value;
+}
+
+QString Scene::remove_game()
+{
+    QString resp = "";
+
+    ifstream ifs;
+    ifs.open(GAME_NAME);
+
+    QString str = "";
+    if (ifs.is_open())
+    {
+        char c;
+        while (ifs.get(c))
+        {
+            str.append(c);
+        }
+    }
+
+    ifs.close();
+
+    QStringList list = str.split("|");
+
+    for (int i = 0; i < list.length(); i++)
+    {
+        QString dta = list.at(i);
+
+        QStringList list_dta = dta.split("@");
+
+        QString id = list_dta.first();
+
+        if (id.toInt() != id_scene)
+        {
+            resp.append(dta);
+        }
+    }
+
+    // Limpiamos el archivo.
+    ofstream ofs;
+    ofs.open(GAME_NAME, ofstream::out | ofstream::trunc);
+    ofs.close();
+
+    return resp;
 }

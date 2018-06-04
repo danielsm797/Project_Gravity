@@ -71,6 +71,8 @@ public:
 
     void setId_scene(int value);
 
+    QString remove_game();
+
 signals:
 
     void open(bool is_multi);
@@ -105,7 +107,9 @@ private:
 
     bool is; // Entró al scene.
 
-    int current_level;
+    int current_level; // Id del nivel actual.
+
+    QVector<int> ids_game; // Id de los juegos.
 
     QVector<int> score; // Puntos.
 
