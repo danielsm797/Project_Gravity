@@ -66,7 +66,7 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
     set_tacos();
     read_level();
 
-    set_planets();
+    set_planets(levels.at(current_level)->getPlanets(), true);
     set_barriers();
     set_targets();
     set_powers();
@@ -298,11 +298,13 @@ void Scene::set_tacos()
     tacos.last()->set_position();
 }
 
-void Scene::set_planets()
+void Scene::set_planets(QVector<QString> plan_, bool fl)
 {
-    QVector<QString> plan = levels.at(current_level)->getPlanets();
+    QVector<QString> plan = plan_;
 
     int x = 723;
+    int y = 582;
+
     for (int i = 0; i < plan.length(); i++)
     {
         x -= 37;
@@ -315,7 +317,7 @@ void Scene::set_planets()
         QString root = ":/Img/";
         root.append(t.append(".png"));
 
-        planets.append(new Planet(x, 582, 32, 32, root, g.toFloat(), levels.at(current_level)->getCoe_res()));
+        planets.append(new Planet(x, y, 32, 32, root, g.toFloat(), levels.at(current_level)->getCoe_res()));
         gc->addItem(planets.last());
         planets.last()->set_position();
     }
@@ -357,6 +359,109 @@ void Scene::set_targets()
     }
 }
 
+void Scene::clear_scene()
+{
+    // Limpiamos los planetas.
+    int lp = planets.length();
+    for (int i = 0; i < lp; i++)
+    {
+        gc->removeItem(planets.at(i));
+    }
+
+    planets.clear();
+
+    // Limpiamos los obstaculos y objetivos.
+    lp = tarbar.length();
+    for (int i = 0; i < lp; i++)
+    {
+        gc->removeItem(tarbar.at(i));
+    }
+
+    tarbar.clear();
+
+    // Ponemos los tacos en su posición inicial.
+    tacos.first()->setPos_x(750);
+    tacos.first()->setPos_y(585);
+    tacos.first()->set_position();
+
+    tacos.last()->setPos_x(779);
+    tacos.last()->setPos_y(80);
+    tacos.last()->set_position();
+
+    // Limpiamos los puntos.
+    ui->lbl_score1->setText(0);
+    ui->lbl_score2->setText(0);
+
+    // Reiniciamos las variables.
+    is_start = false;
+    limit = false;
+    next = true;
+    is = false;
+
+    vel.setY(true);
+    id_scene = 0;
+}
+
+void Scene::load_game()
+{
+    // Leemos el archivo.
+    ifstream ifs;
+    ifs.open(GAME_NAME);
+
+    QString dta = "";
+    if (ifs.is_open())
+    {
+        char c;
+        while (ifs.get(c))
+        {
+            dta.append(c);
+        }
+    }
+
+    ifs.close();
+
+    // Obtenemos los datos.
+    QStringList dta_list = dta.split("|");
+
+    QStringList::iterator it = dta_list.begin();
+    for (; it != dta_list.end(); it++)
+    {
+        QString data = *it;
+        QStringList data_list = data.split("@");
+
+        QString fir = data_list.first();
+        QStringList fir_list = fir.split(";");
+
+        QString id_gm = fir_list.first();
+
+        if (id_gm.toInt() == id_scene)
+        {
+            QString id_lv = fir_list.last();
+
+            current_level = id_lv.toInt(); // Ponemos el id del nivel.
+
+            /*
+                Cargamos los planetas.
+            */
+
+            QString pl_list = data_list.at(1); // Obtenemos todos los planetas.
+
+            QStringList planets_list = pl_list.split(",");
+            QStringList::iterator it = planets_list.begin();
+            for (; it != planets_list.end(); it++)
+            {
+                QString p = *it;
+                QStringList p_l = p.split(";");
+
+                // Aqui
+
+            }
+
+            break;
+        }
+    }
+}
+
 void Scene::set_powers()
 {
     QVector<QString> powers = levels.at(current_level)->getPowers();
@@ -379,6 +484,8 @@ void Scene::set_powers()
 
 void Scene::read_level()
 {
+    levels.clear();
+
     QString dataf = "";
 
     ifstream ifs;
@@ -392,6 +499,8 @@ void Scene::read_level()
             dataf.append(c);
         }
     }
+
+    ifs.close();
 
     if (!dataf.isEmpty())
     {
@@ -417,7 +526,7 @@ void Scene::read_level()
             one = data.at(0);
             levels.at(ind)->setId_level(one.toInt());
 
-            if (ind == 1)
+            if (ind == current_level + 1)
             {
                 QString level_name = "Level ";
                 ui->lbl_level->setText(level_name.append(one));
@@ -614,6 +723,13 @@ void Scene::get_lastId()
     if (id_scene == 0)
     {
         id_scene = id_mayor + 1;
+
+        player_1->update_idGame(id_scene);
+
+        if (is_multiplayer)
+        {
+            player_2->update_idGame(id_scene);
+        }
     }
 }
 
@@ -690,8 +806,7 @@ void Scene::on_btn_save_clicked()
         return;
     }
 
-    // Obtenemos el último id.
-    get_lastId();
+    get_lastId(); // Obtenemos el último id.
 
     tim_hor->stop();
     tim_ver->stop();
@@ -743,6 +858,8 @@ void Scene::on_btn_save_clicked()
     }
 
     dta.append(QString::number(id_scene));
+    dta.append(";");
+    dta.append(QString::number(current_level));
 
     dta.append("@");
 
@@ -871,6 +988,44 @@ int Scene::getId_scene() const
 void Scene::setId_scene(int value)
 {
     id_scene = value;
+}
+
+void Scene::on_btn_load_clicked()
+{
+    QString id_lg = QString::number(player_1->getId_lastGame());
+
+    if (id_lg == 0)
+    {
+        QMessageBox msg(QMessageBox::Warning, "Gravity", "No tiene ninguna partida almacenada.", QMessageBox::Ok, this);
+        msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+        msg.exec();
+
+        return;
+    }
+
+    id_lg.push_front("Se cargará la partida número ");
+
+    tim_cue->stop();
+    tim_hor->stop();
+    tim_ver->stop();
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Gravity", id_lg, QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+    {
+        clear_scene();
+
+        id_scene = player_1->getId_lastGame();
+
+        load_game();
+    }
+    else
+    {
+        tim_hor->start(40);
+        tim_ver->start(50);
+        tim_cue->start(5);
+    }
 }
 
 QString Scene::remove_game()

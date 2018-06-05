@@ -37,6 +37,8 @@ public:
 
     void save_user();
 
+    void update_idGame(int id_);
+
     int getId_user() const;
 
     void setId_user(int value);

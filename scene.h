@@ -45,9 +45,11 @@ public:
 
     void setPlayer_2(User *value);
 
+    QString remove_game();
+
     void set_tacos();
 
-    void set_planets();
+    void set_planets(QVector<QString> plan_, bool fl);
 
     void set_barriers();
 
@@ -63,6 +65,10 @@ public:
 
     void set_targets();
 
+    void clear_scene();
+
+    void load_game();
+
     bool write_file(QString dta);
 
     void get_lastId();
@@ -70,8 +76,6 @@ public:
     int getId_scene() const;
 
     void setId_scene(int value);
-
-    QString remove_game();
 
 signals:
 
@@ -92,6 +96,8 @@ private slots:
     void mov_planet();
 
     void on_btn_save_clicked();
+
+    void on_btn_load_clicked();
 
 private:
 
