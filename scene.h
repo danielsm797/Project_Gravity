@@ -21,8 +21,8 @@
 #include "detail.h"
 #include "taco.h"
 
-#define LEVEL_NAME "../Project_Gravity-master/Level_doc.txt"
-#define GAME_NAME "../Project_Gravity-master/Game_doc.txt"
+#define LEVEL_NAME "../Project_Gravity/Level_doc.txt"
+#define GAME_NAME "../Project_Gravity/Game_doc.txt"
 
 namespace Ui{
 class Scene;

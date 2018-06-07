@@ -87,7 +87,27 @@ void Planet::mov_circular()
 
     set_position();
 
-    if (angle >= 360)
+    if (angle >= 450)
+    {
+        mode = 1;
+
+        angle = 90;
+    }
+}
+
+void Planet::mov_ondulatorio()
+{
+    QVector<float> resp = fis->cal_pos_ond(90, angle);
+
+    setPos_x(resp.first());
+
+    setPos_y(200 + resp.last());
+
+    angle++;
+
+    set_position();
+
+    if (angle >= 450)
     {
         mode = 1;
 

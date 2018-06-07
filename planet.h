@@ -56,6 +56,8 @@ public:
 
     void mov_circular();
 
+    void mov_ondulatorio();
+
     bool border(QMediaPlayer *mp);
 
     float getRadio() const;

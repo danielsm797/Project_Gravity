@@ -84,3 +84,18 @@ float Physics::cal_vel_ang(float ang, float rad)
     return resp;
 }
 
+// Movimiento ondulatorio.
+
+QVector<float> Physics::cal_pos_ond(float a, float y)
+{
+    QVector<float> resp;
+
+    float w = (2 * M_PI) / 20;
+
+    resp.append((a * cos(w * Dt)) + y);
+
+    resp.append(a * sin((resp.first() / 40) - (Dt / 20)));
+
+    return resp;
+}
+

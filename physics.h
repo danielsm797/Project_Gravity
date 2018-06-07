@@ -25,6 +25,8 @@ public:
     QVector<float> cal_pos_cir(float rad, float w, float x, float y, float t);
 
     float cal_vel_ang(float ang, float rad);
+
+    QVector<float> cal_pos_ond(float a, float y);
 };
 
 #endif // PHYSICS_H

@@ -230,6 +230,10 @@ void Scene::mov_planet()
     {
         planets.first()->mov_circular();
     }
+    else
+    {
+        planets.first()->mov_ondulatorio();
+    }
 
     if (planets.first()->getPos_y() <= 74 && !limit) // Validamos si llegó al limite.
     {
@@ -279,13 +283,13 @@ void Scene::mov_planet()
                         tarbar.removeOne(tg);
                     }
                 }
-                else if (tg->getType() == 1)
+                else if (tg->getType() == 1 && planets.first()->getMode() == 1)
                 {
                     tg->play_sound();
 
                     tim_cue->stop();
 
-                    planets.first()->setMode(1);
+                    // planets.first()->setMode(1);
 
                     score.first() -= tg->getScore();
 
@@ -322,19 +326,26 @@ void Scene::mov_planet()
                     planets.first()->set_position();
                     tim_cue->start(8);
                 }
-                else
+                else if (planets.first()->getMode() == 1)
                 {
                     tim_cue->stop();
-
-                    planets.first()->setMode(2);
 
                     tg->play_sound();
 
                     tim_poder->stop();
 
-                    // Obtenemos una posición aleatoria.
-                    planets.first()->setOrigin_x(aleatorio(200, 500));
-                    planets.first()->setOrigin_y(aleatorio(150, 300));
+                    if (tg->getType() == 3)
+                    {
+                        planets.first()->setMode(2);
+
+                        // Obtenemos una posición aleatoria.
+                        planets.first()->setOrigin_x(aleatorio(200, 500));
+                        planets.first()->setOrigin_y(aleatorio(150, 300));
+                    }
+                    else
+                    {
+                        planets.first()->setMode(3);
+                    }
 
                     gc->removeItem(tg); // Eliminamos el poder.
 
