@@ -1,6 +1,8 @@
 #include "scene.h"
 #include "ui_scene.h"
 
+int angulo = 0;
+
 Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
 {
     ui->setupUi(this);
@@ -25,6 +27,7 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
 
     gc = new QGraphicsScene(this);
     ui->graphicsView->setScene(gc);
+    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     gc->setSceneRect(0, 0, ui->graphicsView->width() - 8, ui->graphicsView->height() - 8);
 
     // Agregamos los sonidos.
@@ -41,7 +44,7 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
     sounds.last()->setMedia(QUrl("qrc:/Sounds/par.mp3"));
 
     QPen myPen = QPen(Qt::white);
-    myPen.setStyle(Qt::DashLine);
+    myPen.setStyle(Qt::SolidLine);
 
     QLineF topLine(gc->sceneRect().topLeft(), gc->sceneRect().topRight());
 
@@ -66,10 +69,10 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
     set_tacos();
     read_level();
 
-    set_planets(levels.at(current_level)->getPlanets(), true);
-    set_barriers();
-    set_targets();
-    set_powers();
+    set_planets();
+    set_barriers(levels.at(current_level)->getBarrier());
+    set_targets(levels.at(current_level)->getTargets());
+    set_powers(levels.at(current_level)->getPowers(), true);
 
     tim_hor = new QTimer();
     connect(tim_hor, SIGNAL(timeout()), this, SLOT(hor_move()));
@@ -79,6 +82,14 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
 
     tim_cue = new QTimer();
     connect(tim_cue, SIGNAL(timeout()), this, SLOT(mov_planet()));
+
+    tim_poder = new QTimer();
+    connect(tim_poder, SIGNAL(timeout()), this, SLOT(pow_move()));
+    tim_poder->start(70);
+
+    tim_rot = new QTimer();
+    connect(tim_rot, SIGNAL(timeout()), this, SLOT(rot_ele()));
+    tim_rot->start(200);
 
     vel.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     vel.setAttribute(Qt::WA_TranslucentBackground);
@@ -106,6 +117,10 @@ Scene::~Scene()
 
     delete tim_ver;
 
+    delete tim_poder;
+
+    delete tim_rot;
+
     delete sou_back;
 
     delete l1;
@@ -119,7 +134,7 @@ Scene::~Scene()
 
 void Scene::rec_open(bool is_multi)
 {
-    sou_back->setVolume(35);
+    sou_back->setVolume(40);
     sou_back->play();
 
     is_multiplayer = is_multi;
@@ -146,7 +161,7 @@ void Scene::hor_move()
     {
         if (planets.first()->getVel_x() == 0)
         {
-            tim_cue->start(5);
+            tim_cue->start(8);
 
             tacos.first()->set_position();
 
@@ -187,13 +202,34 @@ void Scene::ver_move()
 
         sounds.at(1)->play();
 
-        tim_cue->start(5);
+        tim_cue->start(8);
+    }
+}
+
+void Scene::pow_move()
+{
+    QVector<TargetBarrier *>::iterator it = tarbar.begin();
+    for (; it != tarbar.end(); it++)
+    {
+        TargetBarrier *tb = *(it);
+
+        if (tb->getType() > 2)
+        {
+            tb->move_cir();
+        }
     }
 }
 
 void Scene::mov_planet()
 {
-    planets.first()->mov_vertical(is);
+    if (planets.first()->getMode() == 1)
+    {
+        planets.first()->mov_vertical(is);
+    }
+    else if (planets.first()->getMode() == 2)
+    {
+        planets.first()->mov_circular();
+    }
 
     if (planets.first()->getPos_y() <= 74 && !limit) // Validamos si llegó al limite.
     {
@@ -208,7 +244,6 @@ void Scene::mov_planet()
         planets.first()->setVel_x(vel.getVel_x());
         planets.first()->setVel_y(vel.getVel_y());
         vel.setVel_x(0);
-
 
         tim_ver->start(50);
     }
@@ -233,8 +268,6 @@ void Scene::mov_planet()
                 // Restamos o sumamos los puntos.
                 if (tg->getType() == 2)
                 {
-                    qDebug() << planets.first()->getPos_x() << " - " << tg->getPos_x() << ", " << planets.first()->getPos_y() << " - " << tg->getPos_y();
-
                     if ((tg->getPos_x() - planets.first()->getPos_x()) < 20 && (tg->getPos_y() - planets.first()->getPos_y()) < 20)
                     {
                         tg->play_sound();
@@ -246,16 +279,93 @@ void Scene::mov_planet()
                         tarbar.removeOne(tg);
                     }
                 }
-                else
+                else if (tg->getType() == 1)
                 {
                     tg->play_sound();
 
+                    tim_cue->stop();
+
+                    planets.first()->setMode(1);
+
                     score.first() -= tg->getScore();
 
-                    // Rebote.
+                    // Obtenemos un número aleatorio del 1 al 4.
+                    int ale = 1 + qrand() % 4;
+
+                    if (ale == 1 || ale == 4) // Rebota hacia arriba.
+                    {
+                        if (ale == 1)
+                        {
+                            planets.first()->setPos_x(tg->getPos_x() - 22);
+                        }
+                        else
+                        {
+                            planets.first()->setPos_x(tg->getPos_x() + 22);
+                        }
+
+                        planets.first()->setVel_x(planets.first()->getVel_x() * -1);
+                    }
+                    else
+                    {
+                        if (ale == 2)
+                        {
+                            planets.first()->setPos_y(tg->getPos_y() - 19);
+                        }
+                        else
+                        {
+                            planets.first()->setPos_y(tg->getPos_y() + 32);
+                        }
+
+                        planets.first()->setVel_y(planets.first()->getVel_y() * -1);
+                    }
+
+                    planets.first()->set_position();
+                    tim_cue->start(8);
+                }
+                else
+                {
+                    tim_cue->stop();
+
+                    planets.first()->setMode(2);
+
+                    tg->play_sound();
+
+                    tim_poder->stop();
+
+                    // Obtenemos una posición aleatoria.
+                    planets.first()->setOrigin_x(aleatorio(200, 500));
+                    planets.first()->setOrigin_y(aleatorio(150, 300));
+
+                    gc->removeItem(tg); // Eliminamos el poder.
+
+                    tarbar.removeOne(tg);
+
+                    tim_poder->start(70);
+
+                    tim_cue->start(8);
                 }
 
                 set_score();
+
+                if(tg->getType() == 2)
+                {
+                    // Validamos si hay objetivos.
+                    if (targets_count() == 0)
+                    {
+                        tim_cue->stop();
+
+                        det.set_score(score.first(), score.last());
+
+                        det.exec();
+
+                        if (!det.getNext())
+                        {
+                            this->close();
+                        }
+
+                        id_scene = 0;
+                    }
+                }
 
                 return;
             }
@@ -266,9 +376,35 @@ void Scene::mov_planet()
 
         if (resp)
         {
+            tim_ver->stop();
+
             tim_cue->stop();
 
+            tim_hor->stop();
+
             delete_planet();
+        }
+    }
+}
+
+void Scene::rot_ele()
+{
+    QVector<TargetBarrier *>::iterator it = tarbar.begin();
+    for (; it != tarbar.end(); it++)
+    {
+        if (angulo == 360)
+        {
+            angulo = 0;
+        }
+
+        angulo += 1;
+
+        TargetBarrier *tb = *(it);
+
+        if (tb->getType() <= 2)
+        {
+            tb->setRotation(angulo);
+            tb->setOpacity(angulo < 180 ? 1 : 0.5);
         }
     }
 }
@@ -298,9 +434,9 @@ void Scene::set_tacos()
     tacos.last()->set_position();
 }
 
-void Scene::set_planets(QVector<QString> plan_, bool fl)
+void Scene::set_planets()
 {
-    QVector<QString> plan = plan_;
+    QVector<QString> plan = levels.at(current_level)->getPlanets();
 
     int x = 723;
     int y = 582;
@@ -309,9 +445,10 @@ void Scene::set_planets(QVector<QString> plan_, bool fl)
     {
         x -= 37;
 
-        QStringList dta = plan.at(i).split('-');
+        QStringList dta = plan.at(i).split(';');
 
         QString t = dta.at(0);
+
         QString g = dta.at(1);
 
         QString root = ":/Img/";
@@ -323,9 +460,9 @@ void Scene::set_planets(QVector<QString> plan_, bool fl)
     }
 }
 
-void Scene::set_barriers()
+void Scene::set_barriers(QVector<QString> dta_)
 {
-    QVector<QString> barr = levels.at(current_level)->getBarrier();
+    QVector<QString> barr = dta_;
 
     for (int i = 0; i < barr.length(); i++)
     {
@@ -335,15 +472,15 @@ void Scene::set_barriers()
         QString y = dta.at(1);
         QString s = dta.at(2);
 
-        tarbar.append(new TargetBarrier(x.toInt(), y.toInt() , 24, 24, ":/Img/asteroid.png", s.toInt(), 1));
+        tarbar.append(new TargetBarrier(x.toInt(), y.toInt() , 24, 24, ":/Img/asteroid.png", s.toInt(), 1, 0));
         gc->addItem(tarbar.last());
         tarbar.last()->set_position();
     }
 }
 
-void Scene::set_targets()
+void Scene::set_targets(QVector<QString> dta_)
 {
-    QVector<QString> targets = levels.at(current_level)->getTargets();
+    QVector<QString> targets = dta_;
 
     for (int i = 0; i < targets.length(); i++)
     {
@@ -353,8 +490,47 @@ void Scene::set_targets()
         QString y = dta.at(1);
         QString s = dta.at(2);
 
-        tarbar.append(new TargetBarrier(x.toInt(), y.toInt() , 32, 32, ":/Img/14.png", s.toInt(), 2));
+        tarbar.append(new TargetBarrier(x.toInt(), y.toInt() , 32, 32, ":/Img/14.png", s.toInt(), 2, 0));
+
+        s.append("</b></font>").push_front("Puntos: <font color='red'><b>");
+
+        tarbar.last()->setToolTip(s);
         gc->addItem(tarbar.last());
+        tarbar.last()->set_position();
+    }
+}
+
+void Scene::set_powers(QVector<QString> dta_, bool fl)
+{
+    QVector<QString> powers = dta_;
+
+    for (int i = 0; i < powers.length(); i++)
+    {
+        QStringList dta = powers.at(i).split('-');
+
+        QString x = dta.at(0);
+        QString y = dta.at(1);
+        QString s = dta.at(2);
+        QString a = "90";
+
+        if (!fl)
+        {
+            a = dta.at(3);
+        }
+
+        QString root = s.toInt() == 3 ? ":/Img/mov1.png" : ":/Img/mov2.png";
+
+        tarbar.append(new TargetBarrier(x.toInt(), y.toInt() , 24, 24, root, 0, s.toInt(), a.toFloat()));
+        gc->addItem(tarbar.last());
+
+        if (!fl)
+        {
+            QString px = dta.at(4);
+            QString py = dta.at(5);
+            tarbar.last()->setOrigen_x(px.toFloat());
+            tarbar.last()->setOrigen_y(py.toFloat());
+        }
+
         tarbar.last()->set_position();
     }
 }
@@ -429,6 +605,7 @@ void Scene::load_game()
         QString data = *it;
         QStringList data_list = data.split("@");
 
+        // Id de la partida y del nivel.
         QString fir = data_list.first();
         QStringList fir_list = fir.split(";");
 
@@ -436,49 +613,132 @@ void Scene::load_game()
 
         if (id_gm.toInt() == id_scene)
         {
-            QString id_lv = fir_list.last();
+            QString id_lv = fir_list.at(1); // Id del nivel.
 
             current_level = id_lv.toInt(); // Ponemos el id del nivel.
 
-            /*
-                Cargamos los planetas.
-            */
+            // Ponemos los puntos
+            ui->lbl_score1->setText(fir_list.at(4));
+            ui->lbl_score2->setText(fir_list.at(5));
 
-            QString pl_list = data_list.at(1); // Obtenemos todos los planetas.
-
-            QStringList planets_list = pl_list.split(",");
-            QStringList::iterator it = planets_list.begin();
-            for (; it != planets_list.end(); it++)
+            // Iniciamos los timers.
+            if (fir_list.at(2) == "1")
             {
-                QString p = *it;
-                QStringList p_l = p.split(";");
-
-                // Aqui
-
+                tim_hor->start(40);
             }
+
+            if (fir_list.at(4) == "1")
+            {
+                tim_ver->start(50);
+            }
+
+            // Ponemos el nombre del nivel.
+            QString llv = "Level ";
+            llv.append(QString::number(current_level + 1));
+            ui->lbl_level->setText(llv);
+
+            // Variables.
+            next     = fir_list.at(6) == "1";
+            limit    = fir_list.at(7) == "1";
+            is       = fir_list.at(8) == "1";
+            is_start = false;
+            // is_start = fir_list.at(9) == "1";
+
+            vel.setY(fir_list.at(10) == "1");
+            ui->btn_start->setText("Continue");
+
+            // Cargamos los planetas.
+            QVector<QString> dta_vector;
+            QString subdta = data_list.at(1);
+            QStringList info_list;
+
+            info_list = subdta.split(",");
+            QStringList::iterator f = info_list.begin();
+            for (; f != info_list.end(); f++)
+            {
+                QString pd = *f;
+                QStringList pd_list = pd.split(";");
+
+                QString x_  = pd_list.at(0);
+                QString y_  = pd_list.at(1);
+                QString vx_ = pd_list.at(2);
+                QString vy_ = pd_list.at(3);
+                QString g_  = pd_list.at(4);
+                QString ay_ = pd_list.at(5);
+                QString mo_ = pd_list.at(7);
+                QString an_ = pd_list.at(8);
+                QString ox_ = pd_list.at(9);
+                QString oy_ = pd_list.at(10);
+
+                planets.append(new Planet(x_.toFloat(), y_.toFloat(), 32, 32, pd_list.at(6), g_.toFloat(), levels.at(current_level)->getCoe_res()));
+                gc->addItem(planets.last());
+
+                planets.last()->setMode(mo_.toInt());
+
+                planets.last()->setAngle(an_.toFloat());
+
+                planets.last()->setOrigin_x(ox_.toFloat());
+
+                planets.last()->setOrigin_y(oy_.toFloat());
+
+                planets.last()->setVel_x(vx_.toFloat());
+
+                planets.last()->setVel_y(vy_.toFloat());
+
+                planets.last()->setY(ay_.toFloat());
+
+                planets.last()->set_position();
+            }
+
+            // Ponemos la posición de los tacos.
+            subdta = data_list.at(2);
+            int ind = 0;
+            info_list = subdta.split(",");
+            QStringList::iterator t = info_list.begin();
+            for (; t != info_list.end(); t++)
+            {
+                QString d = *t;
+                QStringList d_l = d.split(";");
+
+                QString x = d_l.first();
+                QString y = d_l.last();
+
+                tacos.at(ind)->setPos_x(x.toFloat());
+                tacos.at(ind)->setPos_y(y.toFloat());
+                tacos.at(ind)->set_position();
+
+                ind++;
+            }
+
+            // Ponemos los obstaculos.
+            subdta = data_list.at(3);
+            subdta.replace(';', '-');
+
+            info_list = subdta.split(",");
+            dta_vector.clear();
+            dta_vector = info_list.toVector();
+            set_barriers(dta_vector);
+
+            // Ponemos los objetivos.
+            subdta = data_list.at(4);
+            subdta.replace(';', '-');
+
+            info_list = subdta.split(",");
+            dta_vector.clear();
+            dta_vector = info_list.toVector();
+            set_targets(dta_vector);
+
+            // Ponemos los poderes.
+            subdta = data_list.at(5);
+            subdta.replace(';', '-');
+
+            info_list = subdta.split(",");
+            dta_vector.clear();
+            dta_vector = info_list.toVector();
+            set_powers(dta_vector, false);
 
             break;
         }
-    }
-}
-
-void Scene::set_powers()
-{
-    QVector<QString> powers = levels.at(current_level)->getPowers();
-
-    for (int i = 0; i < powers.length(); i++)
-    {
-        QStringList dta = powers.at(i).split('-');
-
-        QString x = dta.at(0);
-        QString y = dta.at(1);
-        QString s = dta.at(2);
-
-        QString root = s.toInt() == 3 ? ":/Img/mov1.png" : ":/Img/mov2.png";
-
-        tarbar.append(new TargetBarrier(x.toInt(), y.toInt() , 24, 24, root, 0, s.toInt()));
-        gc->addItem(tarbar.last());
-        tarbar.last()->set_position();
     }
 }
 
@@ -618,9 +878,6 @@ void Scene::delete_planet()
 {
     sounds.at(2)->play();
 
-    tim_hor->stop();
-    tim_ver->stop();
-
     ui->btn_start->setText("Start");
 
     is_start = false;
@@ -636,6 +893,14 @@ void Scene::delete_planet()
     gc->removeItem(planets.first());
 
     planets.removeAt(0);
+
+    tacos.first()->setPos_x(750);
+    tacos.first()->setPos_y(585);
+    tacos.first()->set_position();
+
+    tacos.last()->setPos_x(779);
+    tacos.last()->setPos_y(80);
+    tacos.last()->set_position();
 
     if (planets.isEmpty() || tarbar.isEmpty())
     {
@@ -692,6 +957,14 @@ void Scene::get_lastId()
     {
         id_scene = 1;
 
+        // Ponemos el id de la partida.
+        player_1->update_idGame(id_scene);
+
+        if (is_multiplayer)
+        {
+            player_2->update_idGame(id_scene);
+        }
+
         return;
     }
 
@@ -702,10 +975,12 @@ void Scene::get_lastId()
     for (int i = 0; i < list.length(); i++)
     {
         QString dta = list.at(i);
-
         QStringList list_dta = dta.split("@");
 
-        QString id = list_dta.first();
+        QString subdta = list_dta.first();
+        QStringList list_subdta = subdta.split(";");
+
+        QString id = list_subdta.first();
 
         ids_game.append(id.toInt());
     }
@@ -780,7 +1055,11 @@ void Scene::on_btn_start_clicked()
 
         if (planets.first()->getVel_x() != 0)
         {
-            tim_cue->start(5);
+            tim_ver->start(50);
+
+            tim_cue->start(8);
+
+            tim_poder->start(70);
         }
     }
     else
@@ -788,6 +1067,10 @@ void Scene::on_btn_start_clicked()
         tim_cue->stop();
 
         tim_hor->stop();
+
+        tim_ver->stop();
+
+        tim_poder->stop();
 
         ui->btn_start->setText("Continue");
     }
@@ -811,6 +1094,7 @@ void Scene::on_btn_save_clicked()
     tim_hor->stop();
     tim_ver->stop();
     tim_cue->stop();
+    tim_poder->stop();
 
     /*
         Creamos el archivo y reiniciamos el juego.
@@ -844,12 +1128,12 @@ void Scene::on_btn_save_clicked()
     {
         tim_hor->start(40);
         tim_ver->start(50);
-        tim_cue->start(5);
+        tim_poder->start(70);
+        tim_cue->start(8);
 
         return;
     }
 
-    // Insertamos los planetas.
     QString dta = "";
 
     if (id_scene > 1)
@@ -857,25 +1141,58 @@ void Scene::on_btn_save_clicked()
         dta.append("|");
     }
 
+    // Encabezado
     dta.append(QString::number(id_scene));
     dta.append(";");
     dta.append(QString::number(current_level));
-
+    dta.append(";");
+    dta.append(tim_hor->isActive() ? "1" : "0"); // 1 si el taco 1 está moviendose.
+    dta.append(";");
+    dta.append(tim_ver->isActive() ? "1" : "0"); // 1 si el taco 2 está moviendose.
+    dta.append(";");
+    dta.append(ui->lbl_score1->text()); // Puntos del jugador 1
+    dta.append(";");
+    dta.append(ui->lbl_score2->text()); // Puntos del jugador 2
+    dta.append(";");
+    dta.append(next ? "1" : "0"); // Variable next
+    dta.append(";");
+    dta.append(limit ? "1" : "0"); // Variable limit
+    dta.append(";");
+    dta.append(is ? "1" : "0"); // Variable is
+    dta.append(";");
+    dta.append(is_start ? "1" : "0"); // Variable is_start
+    dta.append(";");
+    dta.append(vel.getY() ? "1" : "0"); // Variable vel del velocimetro
     dta.append("@");
 
+    // Insertamos los planetas.
     QVector<Planet *>::iterator it;
     it = planets.begin();
     for (; it != planets.end(); it++)
     {
         Planet *p = *it;
 
-        dta.append(QString::number(p->getPos_x()).append(";")); // Posición en X
-        dta.append(QString::number(p->getPos_y()).append(";")); // Posición en Y
-        dta.append(QString::number(p->getVel_x()).append(";")); // Velocidad en X
-        dta.append(QString::number(p->getVel_y()).append(";")); // Velocidad en Y
-        dta.append(QString::number(p->getCoe_fr()).append(";")); // Coeficiente de restitución
+        dta.append(QString::number(p->getPos_x()).append(";"));   // Posición en X
+
+        dta.append(QString::number(p->getPos_y()).append(";"));   // Posición en Y
+
+        dta.append(QString::number(p->getVel_x()).append(";"));   // Velocidad en X
+
+        dta.append(QString::number(p->getVel_y()).append(";"));   // Velocidad en Y
+
         dta.append(QString::number(p->getAce_gra()).append(";")); // Aceleración de la graverdad.
-        dta.append(QString::number(p->getY_aux())); // Posición Y auxiliar.z
+
+        dta.append(QString::number(p->getY_aux()).append((";"))); // Posición Y auxiliar.
+
+        dta.append(p->getRoot().append(";"));                     // Tipo
+
+        dta.append(QString::number(p->getMode()).append(";"));    // Modo
+
+        dta.append(QString::number(p->getAngle()).append(";"));   // Angulo
+
+        dta.append(QString::number(p->getOrigin_x()).append(";"));   // Posición original en X
+
+        dta.append(QString::number(p->getOrigin_y()));   // Posición original en Y
 
         dta.append(",");
     }
@@ -932,9 +1249,12 @@ void Scene::on_btn_save_clicked()
         }
         else
         {
-            pow_s.append(QString::number(tb->getPos_x()).append(";")); // Posición en X
-            pow_s.append(QString::number(tb->getPos_y()).append(";")); // Posición en Y
-            pow_s.append(QString::number(tb->getType())); // Tipo
+            pow_s.append(QString::number(tb->getPos_x()).append(";"));      // Posición en X
+            pow_s.append(QString::number(tb->getPos_y()).append(";"));      // Posición en Y
+            pow_s.append(QString::number(tb->getType()).append(";"));       // Tipo
+            pow_s.append(QString::number(tb->getAngulo()).append(";"));     // Angulo
+            pow_s.append(QString::number(tb->getOrigen_x()).append(";"));   // Posición inicial en X
+            pow_s.append(QString::number(tb->getOrigen_y()));               // Posición inicial en Y
 
             pow_s.append(",");
         }
@@ -977,17 +1297,8 @@ void Scene::on_btn_save_clicked()
 
     tim_hor->start(40);
     tim_ver->start(50);
-    tim_cue->start(5);
-}
-
-int Scene::getId_scene() const
-{
-    return id_scene;
-}
-
-void Scene::setId_scene(int value)
-{
-    id_scene = value;
+    tim_poder->start(70);
+    tim_cue->start(8);
 }
 
 void Scene::on_btn_load_clicked()
@@ -1008,6 +1319,7 @@ void Scene::on_btn_load_clicked()
     tim_cue->stop();
     tim_hor->stop();
     tim_ver->stop();
+    tim_poder->stop();
 
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Gravity", id_lg, QMessageBox::Yes | QMessageBox::No);
@@ -1024,8 +1336,45 @@ void Scene::on_btn_load_clicked()
     {
         tim_hor->start(40);
         tim_ver->start(50);
-        tim_cue->start(5);
+        tim_cue->start(8);
     }
+}
+
+int Scene::getId_scene() const
+{
+    return id_scene;
+}
+
+void Scene::setId_scene(int value)
+{
+    id_scene = value;
+}
+
+int Scene::targets_count()
+{
+    int resp = 0;
+
+    QVector<TargetBarrier *>::iterator it = tarbar.begin();
+    for (; it != tarbar.end(); it++)
+    {
+        TargetBarrier * tb = *it;
+
+        if (tb->getType() == 2)
+        {
+            resp++;
+        }
+    }
+
+    return resp;
+}
+
+float Scene::aleatorio(float LO, float HI)
+{
+    float resp = 0;
+
+    resp = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+    return resp;
 }
 
 QString Scene::remove_game()

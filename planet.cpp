@@ -60,6 +60,7 @@ void Planet::mov_vertical(bool fl)
     else
     {
         setPos_x(pos.at(0));
+
         setPos_y(pos.at(1));
     }
 
@@ -72,6 +73,28 @@ void Planet::mov_vertical(bool fl)
     set_position();
 }
 
+void Planet::mov_circular()
+{
+    angle++;
+
+    float w = fis->cal_vel_ang(angle, 120);
+
+    QVector<float> resp = fis->cal_pos_cir(120, w, origin_x, origin_y, 0.01);
+
+    setPos_x(resp.first());
+
+    setPos_y(resp.last());
+
+    set_position();
+
+    if (angle >= 360)
+    {
+        mode = 1;
+
+        angle = 90;
+    }
+}
+
 bool Planet::border(QMediaPlayer *mp)
 {
     bool resp = false;
@@ -80,7 +103,7 @@ bool Planet::border(QMediaPlayer *mp)
     {
         setPos_x(11);
 
-        vel_x *= (-1 * coe_re);
+        vel_x *= -1;
 
         mp->play();
     }
@@ -88,7 +111,7 @@ bool Planet::border(QMediaPlayer *mp)
     {
         setPos_x(700);
 
-        vel_x *= (-1 * coe_re);
+        vel_x *= -1;
 
         mp->play();
     }
@@ -96,7 +119,7 @@ bool Planet::border(QMediaPlayer *mp)
     {
         setPos_y(11);
 
-        vel_y *= (-1 * coe_re);
+        vel_y *= -1;
 
         mp->play();
     }
@@ -104,12 +127,12 @@ bool Planet::border(QMediaPlayer *mp)
     {
         setPos_y(540);
 
-        vel_y *= (-1 * coe_re);
+        vel_y *= -1;
 
         mp->play();
     }
 
-    if (abs(vel_x) < 1 || abs(vel_y) < 1)
+    if (abs(vel_x) < 0.5 || abs(vel_y) < 0.5)
     {
         resp = true; // Terminó.
     }
@@ -147,19 +170,67 @@ void Planet::setY_aux(float value)
     y_aux = value;
 }
 
+int Planet::getMode() const
+{
+    return mode;
+}
+
+void Planet::setMode(int value)
+{
+    mode = value;
+}
+
+float Planet::getOrigin_x() const
+{
+    return origin_x;
+}
+
+void Planet::setOrigin_x(float value)
+{
+    origin_x = value;
+}
+
+float Planet::getOrigin_y() const
+{
+    return origin_y;
+}
+
+void Planet::setOrigin_y(float value)
+{
+    origin_y = value;
+}
+
+float Planet::getAngle() const
+{
+    return angle;
+}
+
+void Planet::setAngle(float value)
+{
+    angle = value;
+}
+
 Planet::Planet(int pos_x_, int pos_y_, int width_, int height_, QString root_, float ace_gra_, float coe_fr_) : Element(pos_x_, pos_y_, width_, height_, root_)
 {
     ace_gra = ace_gra_;
 
     coe_fr = coe_fr_;
 
-    coe_re = 0.8;
+    coe_re = 0;
 
     vel_x = 0;
+
+    angle = 90;
 
     masa = 577.642151;
 
     radio = 1.5;
+
+    origin_x = 0;
+
+    origin_y = 0;
+
+    mode = 1; // Modo normal, 2: Modo circular y 3: Modo Pendular.
 
     y_aux = getPos_y();
 }

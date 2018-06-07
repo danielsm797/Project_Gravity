@@ -21,6 +21,10 @@ public:
     QVector<float> cal_vel(float vx_i, float vy_i, float ac_x, float ac_y);
 
     QVector<float> cal_aceleracion(float mag_v, float rad, float masa, float angulo, float coe_fr, float ace_gra);
+
+    QVector<float> cal_pos_cir(float rad, float w, float x, float y, float t);
+
+    float cal_vel_ang(float ang, float rad);
 };
 
 #endif // PHYSICS_H

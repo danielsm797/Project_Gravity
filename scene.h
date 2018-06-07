@@ -10,6 +10,7 @@
 #include <QMediaPlayer>
 #include <fstream>
 #include <time.h>
+#include <QToolTip>
 #include <QFontDatabase>
 #include <qmediaplaylist.h>
 #include "user.h"
@@ -20,8 +21,8 @@
 #include "detail.h"
 #include "taco.h"
 
-#define LEVEL_NAME "../GRAVITY/Level_doc.txt"
-#define GAME_NAME "../GRAVITY/Game_doc.txt"
+#define LEVEL_NAME "../Project_Gravity-master/Level_doc.txt"
+#define GAME_NAME "../Project_Gravity-master/Game_doc.txt"
 
 namespace Ui{
 class Scene;
@@ -49,11 +50,11 @@ public:
 
     void set_tacos();
 
-    void set_planets(QVector<QString> plan_, bool fl);
+    void set_planets();
 
-    void set_barriers();
+    void set_barriers(QVector<QString> dta_);
 
-    void set_powers();
+    void set_powers(QVector<QString> dta_, bool fl);
 
     void read_level();
 
@@ -63,7 +64,7 @@ public:
 
     void delete_planet();
 
-    void set_targets();
+    void set_targets(QVector<QString> dta_);
 
     void clear_scene();
 
@@ -76,6 +77,10 @@ public:
     int getId_scene() const;
 
     void setId_scene(int value);
+
+    int targets_count();
+
+    float aleatorio(float LO, float HI);
 
 signals:
 
@@ -93,7 +98,11 @@ private slots:
 
     void ver_move();
 
+    void pow_move();
+
     void mov_planet();
+
+    void rot_ele();
 
     void on_btn_save_clicked();
 
@@ -145,11 +154,15 @@ private:
 
     QGraphicsScene *gc;
 
+    QTimer *tim_poder;
+
     QTimer *tim_hor;
 
     QTimer *tim_ver;
 
     QTimer *tim_cue;
+
+    QTimer *tim_rot;
 
     Velocity vel;
 

@@ -26,6 +26,14 @@ private:
 
     float y_aux;
 
+    int mode;
+
+    float origin_x;
+
+    float origin_y;
+
+    float angle;
+
     Physics *fis;
 
 public:
@@ -46,6 +54,8 @@ public:
 
     void mov_vertical(bool fl);
 
+    void mov_circular();
+
     bool border(QMediaPlayer *mp);
 
     float getRadio() const;
@@ -59,6 +69,22 @@ public:
     float getY_aux() const;
 
     void setY_aux(float value);
+
+    int getMode() const;
+
+    void setMode(int value);
+
+    float getOrigin_x() const;
+
+    void setOrigin_x(float value);
+
+    float getOrigin_y() const;
+
+    void setOrigin_y(float value);
+
+    float getAngle() const;
+
+    void setAngle(float value);
 };
 
 #endif // PLANET_H

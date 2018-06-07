@@ -3,6 +3,7 @@
 
 #include <QPainter>
 #include <QGraphicsItem>
+#include <QGraphicsScene>
 
 class Element : public QGraphicsItem
 {
@@ -15,6 +16,8 @@ private:
     int width;
 
     int height;
+
+    int tipo;
 
     QString root;
 
