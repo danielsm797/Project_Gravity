@@ -26,13 +26,15 @@ private:
 
     float y_aux;
 
-    int mode;
-
     float origin_x;
 
     float origin_y;
 
     float angle;
+
+    int mode;
+
+    int random_y;
 
     Physics *fis;
 

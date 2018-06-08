@@ -47,14 +47,16 @@
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-	color: rgb(255, 56, 38);	
-	border: 1px solid rgb(255, 56, 38);
-		font: italic 15pt &quot;Harlow Solid Italic&quot;;
+	background-color: rgb(255, 56, 38);
+	color: white;
+	border: 2px solid rgb(255, 56, 38);
+	font: 63 14pt &quot;Segoe UI Semibold&quot;;
 }
 
 QPushButton:hover { 
-	background-color: rgb(255, 56, 38);
+	background-color: rgba(255, 255, 255, .1);
 	color: white;
+	border: 2px solid white;
 }
 
 QPushButton:pressed { 
@@ -80,8 +82,9 @@ QPushButton:pressed {
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #6D8E99;
-border: 0px;</string>
+    <string notr="true">color: #ABF0DA;
+border: 0px;
+font: 15pt &quot;OCR A Extended&quot;;</string>
    </property>
    <property name="title">
     <string>Player 1</string>
@@ -92,15 +95,15 @@ border: 0px;</string>
    <widget class="QLabel" name="lbl_namePlayer1">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>0</x>
       <y>50</y>
       <width>121</width>
-      <height>21</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
-color: #FAE6AA;</string>
+     <string notr="true">font: italic 17pt &quot;Harlow Solid Italic&quot;;
+color:white;</string>
     </property>
     <property name="text">
      <string/>
@@ -112,14 +115,15 @@ color: #FAE6AA;</string>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>61</width>
+      <x>60</x>
+      <y>40</y>
+      <width>81</width>
       <height>16</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: white;</string>
+     <string notr="true">color: white;
+font-size: 13px;</string>
     </property>
     <property name="text">
      <string>User name</string>
@@ -128,15 +132,15 @@ color: #FAE6AA;</string>
    <widget class="QLabel" name="lbl_score1">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>100</y>
-      <width>121</width>
-      <height>20</height>
+      <x>50</x>
+      <y>80</y>
+      <width>91</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
-color: #FAE6AA;</string>
+     <string notr="true">font: italic 40pt &quot;Harlow Solid Italic&quot;;
+color: #ABF0DA</string>
     </property>
     <property name="text">
      <string/>
@@ -148,14 +152,15 @@ color: #FAE6AA;</string>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>80</y>
+      <x>10</x>
+      <y>100</y>
       <width>61</width>
       <height>16</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: white;</string>
+     <string notr="true">color: white;
+font-size: 13px;</string>
     </property>
     <property name="text">
      <string>score</string>
@@ -166,14 +171,15 @@ color: #FAE6AA;</string>
    <property name="geometry">
     <rect>
      <x>810</x>
-     <y>180</y>
+     <y>190</y>
      <width>141</width>
      <height>131</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #6D8E99;
-border: 0px;</string>
+    <string notr="true">color: #ABF0DA;
+border: 0px;
+font: 15pt &quot;OCR A Extended&quot;;</string>
    </property>
    <property name="title">
     <string>Player 2</string>
@@ -181,15 +187,15 @@ border: 0px;</string>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>61</width>
+      <x>70</x>
+      <y>40</y>
+      <width>81</width>
       <height>16</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-color: white;</string>
+     <string notr="true">color: white;
+font-size: 13px;</string>
     </property>
     <property name="text">
      <string>User name</string>
@@ -201,12 +207,12 @@ color: white;</string>
       <x>20</x>
       <y>50</y>
       <width>101</width>
-      <height>21</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 16pt &quot;MV Boli&quot;;
-color: #FAE6AA;</string>
+     <string notr="true">font: italic 17pt &quot;Harlow Solid Italic&quot;;
+color: white;</string>
     </property>
     <property name="text">
      <string/>
@@ -218,15 +224,15 @@ color: #FAE6AA;</string>
    <widget class="QLabel" name="lbl_score2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>100</y>
-      <width>101</width>
-      <height>20</height>
+      <x>50</x>
+      <y>79</y>
+      <width>91</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 16pt &quot;MV Boli&quot;;
-color: #FAE6AA;</string>
+     <string notr="true">font: italic 40pt &quot;Harlow Solid Italic&quot;;
+color: #ABF0DA</string>
     </property>
     <property name="text">
      <string/>
@@ -238,15 +244,15 @@ color: #FAE6AA;</string>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>80</y>
+      <x>10</x>
+      <y>100</y>
       <width>61</width>
       <height>16</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-color: white;</string>
+     <string notr="true">color: white;
+font-size: 13px;</string>
     </property>
     <property name="text">
      <string>score</string>
@@ -257,21 +263,23 @@ color: white;</string>
    <property name="geometry">
     <rect>
      <x>820</x>
-     <y>420</y>
+     <y>440</y>
      <width>131</width>
      <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-	color: #FAE6AA;	
-	border: 1px solid #FAE6AA;
-	font: italic 15pt &quot;Harlow Solid Italic&quot;;
+	background-color: #97493A;
+	color: white;
+	border: 2px solid #97493A;
+	font: 63 14pt &quot;Segoe UI Semibold&quot;;
 }
 
 QPushButton:hover { 
-	background-color: #FAE6AA;
-	color: black;
+	background-color: rgba(255, 255, 255, .1);
+	color: white;
+	border: 2px solid white;
 }
 
 QPushButton:pressed { 
@@ -291,21 +299,23 @@ QPushButton:pressed {
    <property name="geometry">
     <rect>
      <x>820</x>
-     <y>470</y>
+     <y>490</y>
      <width>131</width>
      <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-	color: #FAE6AA;	
-	border: 1px solid #FAE6AA;
-	font: italic 15pt &quot;Harlow Solid Italic&quot;;
+	background-color: #97493A;
+	color: white;
+	border: 2px solid #97493A;
+	font: 63 14pt &quot;Segoe UI Semibold&quot;;
 }
 
 QPushButton:hover { 
-	background-color: #FAE6AA;
-	color: black;
+	background-color: rgba(255, 255, 255, .1);
+	color: white;
+	border: 2px solid white;
 }
 
 QPushButton:pressed { 
@@ -331,7 +341,7 @@ QPushButton:pressed {
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgba(0, 0, 0, 0.3);</string>
+    <string notr="true">background-color: rgba(0, 0, 0, 0.1);</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::NoFrame</enum>
@@ -341,21 +351,23 @@ QPushButton:pressed {
    <property name="geometry">
     <rect>
      <x>820</x>
-     <y>330</y>
+     <y>350</y>
      <width>131</width>
      <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-	color: #FAE6AA;	
-	border: 1px solid #FAE6AA;
-	font: italic 15pt &quot;Harlow Solid Italic&quot;;
+	background-color: #3A9758;
+	color: white;
+	border: 2px solid #3A9758;
+	font: 63 14pt &quot;Segoe UI Semibold&quot;;
 }
 
 QPushButton:hover { 
-	background-color: #FAE6AA;
-	color: black;
+	background-color: rgba(255, 255, 255, .1);
+	color: white;
+	border: 2px solid white;
 }
 
 QPushButton:pressed { 
@@ -374,21 +386,63 @@ QPushButton:pressed {
   <widget class="QLabel" name="lbl_level">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>91</width>
-     <height>31</height>
+     <x>0</x>
+     <y>10</y>
+     <width>111</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
-color: rgb(255, 187, 28);</string>
+color: #FFD502</string>
    </property>
    <property name="text">
     <string>Level 1</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_turno">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>20</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
+color: #FFD502</string>
+   </property>
+   <property name="text">
+    <string>Player 1 is playing...</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_time">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>590</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: italic 18pt &quot;Harlow Solid Italic&quot;;
+color: #9D1ED8;
+background-color: white;
+border-radius: 15px;</string>
+   </property>
+   <property name="text">
+    <string>00:00:60</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

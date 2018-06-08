@@ -15,7 +15,7 @@ public:
 
     explicit Detail(QWidget *parent = 0);
 
-    void set_score(int one, int two);
+    void set_score(int one, int two, int can, bool is_);
 
     bool getNext() const;
 

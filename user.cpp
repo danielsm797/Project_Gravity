@@ -156,14 +156,24 @@ void User::update_idGame(int id_)
                 user.append(data);
             }
 
-            user.remove(user.length() - 1, 1);
+            if (user.at(user.length() - 1) == '@')
+            {
+                user.remove(user.length() - 1, 1);
+            }
 
             user.append("|");
         }
         else
         {
             user.append(str);
+
+            user.append("|");
         }
+    }
+
+    if (user.at(user.length() - 1) == '|')
+    {
+        user.remove(user.length() - 1, 1);
     }
 
     // Actualizamos el id.

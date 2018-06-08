@@ -82,6 +82,10 @@ public:
 
     float aleatorio(float LO, float HI);
 
+    void is_multi(int id_s);
+
+    void next_level();
+
 signals:
 
     void open(bool is_multi);

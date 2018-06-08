@@ -28,6 +28,8 @@
         <file>comet.png</file>
         <file>mov1.png</file>
         <file>mov2.png</file>
+        <file>back-game-1.jpg</file>
+        <file>back-game-2.jpg</file>
     </qresource>
     <qresource prefix="/Sounds">
         <file>abs.mp3</file>

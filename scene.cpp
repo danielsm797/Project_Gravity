@@ -273,7 +273,7 @@ void Scene::mov_planet()
                 // Restamos o sumamos los puntos.
                 if (tg->getType() == 2)
                 {
-                    if ((tg->getPos_x() - planets.first()->getPos_x()) < 20 && (tg->getPos_y() - planets.first()->getPos_y()) < 20)
+                    if ((tg->getPos_x() - planets.first()->getPos_x()) < 10 && (tg->getPos_y() - planets.first()->getPos_y()) < 10)
                     {
                         tg->play_sound();
 
@@ -299,13 +299,16 @@ void Scene::mov_planet()
 
                     // planets.first()->setMode(1);
 
-                    if (!is_second)
+                    if (tg->opacity() == 1)
                     {
-                        score.first() -= tg->getScore();
-                    }
-                    else
-                    {
-                        score.last() -= tg->getScore();
+                        if (!is_second)
+                        {
+                            score.first() -= tg->getScore();
+                        }
+                        else
+                        {
+                            score.last() -= tg->getScore();
+                        }
                     }
 
                     // Obtenemos un número aleatorio del 1 al 4.
@@ -410,7 +413,11 @@ void Scene::rot_ele()
         if (tb->getType() <= 2)
         {
             tb->setRotation(angulo);
-            tb->setOpacity(angulo < 180 ? 1 : 0.5);
+
+            if (tb->getType() == 1)
+            {
+                tb->setOpacity(angulo < 180 ? 1 : 0.5);
+            }
         }
     }
 }
@@ -651,6 +658,9 @@ void Scene::load_game()
             // is_start = fir_list.at(9) == "1";
 
             vel.setY(fir_list.at(10) == "1");
+
+            is_multiplayer = fir_list.last() == "1";
+
             ui->btn_start->setText("Continue");
 
             // Cargamos los planetas.
@@ -727,22 +737,29 @@ void Scene::load_game()
 
             // Ponemos los objetivos.
             subdta = data_list.at(4);
-            subdta.replace(';', '-');
 
-            info_list = subdta.split(",");
-            dta_vector.clear();
-            dta_vector = info_list.toVector();
-            set_targets(dta_vector);
+            if (subdta != "-1")
+            {
+                subdta.replace(';', '-');
+
+                info_list = subdta.split(",");
+                dta_vector.clear();
+                dta_vector = info_list.toVector();
+                set_targets(dta_vector);
+            }
 
             // Ponemos los poderes.
             subdta = data_list.at(5);
-            subdta.replace(';', '-');
 
-            info_list = subdta.split(",");
-            dta_vector.clear();
-            dta_vector = info_list.toVector();
-            set_powers(dta_vector, false);
+            if (subdta != "-1")
+            {
+                subdta.replace(';', '-');
 
+                info_list = subdta.split(",");
+                dta_vector.clear();
+                dta_vector = info_list.toVector();
+                set_powers(dta_vector, false);
+            }
             break;
         }
     }
@@ -792,11 +809,8 @@ void Scene::read_level()
             one = data.at(0);
             levels.at(ind)->setId_level(one.toInt());
 
-            if (ind == current_level + 1)
-            {
-                QString level_name = "Level ";
-                ui->lbl_level->setText(level_name.append(one));
-            }
+            QString level_name = "Level ";
+            ui->lbl_level->setText(level_name.append(one));
 
             one = data.at(1);
             levels.at(ind)->setCoe_res(one.toFloat());
@@ -908,39 +922,80 @@ void Scene::delete_planet()
     tacos.last()->setPos_y(80);
     tacos.last()->set_position();
 
-    if (targets_count() == 0 || planets.isEmpty())
-    {
-        qDebug() << is_multiplayer << " - " << is_second;
+    int t_c = targets_count();
 
+    if (t_c == 0 || planets.isEmpty())
+    {
         if (is_multiplayer && !is_second)
         {
-            clear_scene();
+            next_level();
 
-            set_planets();
-
-            set_tacos();
-
-            set_targets(levels.at(current_level)->getTargets());
-
-            set_barriers(levels.at(current_level)->getBarrier());
-
-            set_powers(levels.at(current_level)->getPowers(), true);
+            if (t_c == 0)
+            {
+                score.first() += 200;
+            }
 
             set_score();
+
+            ui->lbl_turno->setText("Player 2 is playing...");
 
             is_second = true;
         }
         else
         {
+            if (is_second && t_c == 0)
+            {
+                score.last() += 200;
+            }
+            else if (t_c == 0)
+            {
+                score.first() += 200;
+            }
+
+            set_score();
+
             tim_cue->stop();
 
-            det.set_score(score.first(), score.last());
+            det.set_score(score.first(), score.last(), t_c, is_multiplayer);
 
             det.exec();
 
             if (!det.getNext())
             {
                 this->close();
+            }
+            else
+            {
+                ui->lbl_turno->setText("Player 1 is playing...");
+
+                if (t_c == 0)
+                {
+                    // Next level.
+                    current_level += 1;
+
+                    QString level_name = "Level ";
+                    ui->lbl_level->setText(level_name.append(QString::number(current_level + 1)));
+
+                    if (current_level == 1)
+                    {
+                        ui->lbl_back->setTextFormat(Qt::RichText);
+                        ui->lbl_back->setText("<img src=':/Img/back-game-1.jpg'>");
+                    }
+                    else if (current_level == 2)
+                    {
+                        ui->lbl_back->setTextFormat(Qt::RichText);
+                        ui->lbl_back->setText("<img src=':/Img/back-game-2.jpg'>");
+                    }
+                }
+
+                is_second = false;
+
+                score.first() = 0;
+                score.last() = 0;
+
+                next_level();
+
+                set_score();
             }
 
             id_scene = 0;
@@ -1111,14 +1166,14 @@ void Scene::on_btn_start_clicked()
 
 void Scene::on_btn_save_clicked()
 {
-    if (!is_start)
-    {
-        QMessageBox msg(QMessageBox::Critical, "Gravity", "No se puede guardar la partida, primero se tiene que empezar", QMessageBox::Ok, this);
-        msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
-        msg.exec();
+    //    if (!is_start)
+    //    {
+    //        QMessageBox msg(QMessageBox::Critical, "Gravity", "No se puede guardar la partida, primero se tiene que empezar", QMessageBox::Ok, this);
+    //        msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+    //        msg.exec();
 
-        return;
-    }
+    //        return;
+    //    }
 
     get_lastId(); // Obtenemos el último id.
 
@@ -1194,6 +1249,8 @@ void Scene::on_btn_save_clicked()
     dta.append(is_start ? "1" : "0"); // Variable is_start
     dta.append(";");
     dta.append(vel.getY() ? "1" : "0"); // Variable vel del velocimetro
+    dta.append(";");
+    dta.append(is_multiplayer ? "1" : "0");
     dta.append("@");
 
     // Insertamos los planetas.
@@ -1286,7 +1343,6 @@ void Scene::on_btn_save_clicked()
             pow_s.append(QString::number(tb->getAngulo()).append(";"));     // Angulo
             pow_s.append(QString::number(tb->getOrigen_x()).append(";"));   // Posición inicial en X
             pow_s.append(QString::number(tb->getOrigen_y()));               // Posición inicial en Y
-
             pow_s.append(",");
         }
     }
@@ -1295,8 +1351,19 @@ void Scene::on_btn_save_clicked()
     bar_s.remove(bar_s.length() - 1, 1);
     pow_s.remove(pow_s.length() - 1, 1);
 
+    if (tar_s.isEmpty())
+    {
+        tar_s.append("-1"); // No tiene poderes.
+    }
+
     dta.append(tar_s.append("@"));
     dta.append(bar_s.append("@"));
+
+    if (pow_s.isEmpty())
+    {
+        pow_s.append("-1"); // No tiene poderes.
+    }
+
     dta.append(pow_s);
 
     // Si estamos sobreescribiendo, elimamos el que ya está.
@@ -1335,6 +1402,24 @@ void Scene::on_btn_save_clicked()
 void Scene::on_btn_load_clicked()
 {
     QString id_lg = QString::number(player_1->getId_lastGame());
+
+    QString id_lg_s = "0";
+
+    is_multi(id_lg.toInt());
+
+    if (is_multiplayer)
+    {
+        id_lg_s = player_2 == NULL ? id_lg_s : QString::number(player_2->getId_lastGame());
+
+        if (id_lg.toInt() != id_lg_s.toInt())
+        {
+            QMessageBox msg(QMessageBox::Information, "Gravity", "Los jugadores no tienen la partida sincronizada.", QMessageBox::Ok, this);
+            msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+            msg.exec();
+
+            return;
+        }
+    }
 
     if (id_lg == 0)
     {
@@ -1406,6 +1491,70 @@ float Scene::aleatorio(float LO, float HI)
     resp = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
 
     return resp;
+}
+
+void Scene::is_multi(int id_s)
+{
+    // Leemos el archivo.
+    ifstream ifs;
+    ifs.open(GAME_NAME);
+
+    QString dta = "";
+    if (ifs.is_open())
+    {
+        char c;
+        while (ifs.get(c))
+        {
+            dta.append(c);
+        }
+    }
+
+    ifs.close();
+
+    // Obtenemos los datos.
+    QStringList dta_list = dta.split("|");
+
+    QStringList::iterator it = dta_list.begin();
+    for (; it != dta_list.end(); it++)
+    {
+        QString data = *it;
+        QStringList data_list = data.split("@");
+
+        // Id de la partida y del nivel.
+        QString fir = data_list.first();
+        QStringList fir_list = fir.split(";");
+
+        QString id_gm = fir_list.first();
+
+        if (id_gm.toInt() == id_s)
+        {
+            is_multiplayer = fir_list.last() == "1";
+
+            break;
+        }
+    }
+}
+
+void Scene::next_level()
+{
+    clear_scene();
+
+    set_planets();
+
+    // Ponemos los tacos en su posición inicial.
+    tacos.first()->setPos_x(750);
+    tacos.first()->setPos_y(585);
+    tacos.first()->set_position();
+
+    tacos.last()->setPos_x(779);
+    tacos.last()->setPos_y(80);
+    tacos.last()->set_position();
+
+    set_targets(levels.at(current_level)->getTargets());
+
+    set_barriers(levels.at(current_level)->getBarrier());
+
+    set_powers(levels.at(current_level)->getPowers(), true);
 }
 
 QString Scene::remove_game()

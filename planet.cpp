@@ -101,7 +101,7 @@ void Planet::mov_ondulatorio()
 
     setPos_x(resp.first());
 
-    setPos_y(200 + resp.last());
+    setPos_y(random_y + resp.last());
 
     angle++;
 
@@ -251,6 +251,8 @@ Planet::Planet(int pos_x_, int pos_y_, int width_, int height_, QString root_, f
     origin_y = 0;
 
     mode = 1; // Modo normal, 2: Modo circular y 3: Modo Pendular.
+
+    random_y = 100 + qrand() % 400;
 
     y_aux = getPos_y();
 }
