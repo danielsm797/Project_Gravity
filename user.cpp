@@ -44,6 +44,8 @@ void User::read_file()
         }
     }
 
+    ifs.close();
+
     QStringList users_list = dataf.split('|');
 
     if (!dataf.isEmpty())
@@ -83,7 +85,10 @@ void User::read_file()
 
         id_user = id_usr.toInt() + 1;
 
-        save_user();
+        if (!is_login)
+        {
+            save_user();
+        }
     }
 }
 
@@ -170,7 +175,7 @@ void User::update_idGame(int id_)
     id_lastGame = id_;
 }
 
-User::User(QString user_name_, QString password_)
+User::User(QString user_name_, QString password_, bool is_login_)
 {
     user_name = user_name_;
 
@@ -181,6 +186,8 @@ User::User(QString user_name_, QString password_)
     id_lastGame = 0;
 
     exist = false;
+
+    is_login = is_login_;
 
     dataf = "";
 

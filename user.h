@@ -19,6 +19,8 @@ private:
 
     bool exist;
 
+    bool is_login;
+
     QString user_name;
 
     QString password;
@@ -29,7 +31,7 @@ public:
 
     User();
 
-    User(QString user_name_, QString password_);
+    User(QString user_name_, QString password_, bool is_login);
 
     QString getUser_name() const;
 

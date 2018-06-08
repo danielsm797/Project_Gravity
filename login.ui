@@ -43,8 +43,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 9pt &quot;MV Boli&quot;;
-color: white;</string>
+    <string notr="true">color: white;</string>
    </property>
    <property name="text">
     <string>User name:</string>
@@ -60,7 +59,7 @@ color: white;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 14pt &quot;MV Boli&quot;;
+    <string notr="true">font: italic 18pt &quot;Harlow Solid Italic&quot;;
 color: #FAE6AA;</string>
    </property>
    <property name="text">
@@ -74,16 +73,16 @@ color: #FAE6AA;</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>390</y>
+     <y>380</y>
      <width>121</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	color: #FAE6AA;	
 	border: 1px solid #FAE6AA;
-	font: 11pt &quot;MV Boli&quot;;
+	font: 15pt &quot;Harlow Solid Italic&quot;;
 }
 
 QPushButton:hover { 
@@ -110,14 +109,14 @@ QPushButton:pressed {
      <x>150</x>
      <y>20</y>
      <width>121</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	color: white;	
 	border: 1px solid white;
-	font: 11pt &quot;MV Boli&quot;;
+   font: italic 15pt &quot;Harlow Solid Italic&quot;
 }
 
 QPushButton:hover { 
@@ -144,14 +143,14 @@ QPushButton:pressed {
      <x>20</x>
      <y>20</y>
      <width>121</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	color: #FAE6AA;	
 	border: 1px solid #FAE6AA;
-	font: 11pt &quot;MV Boli&quot;;
+	font: italic 15pt &quot;Harlow Solid Italic&quot;
 }
 
 QPushButton:hover { 
@@ -184,21 +183,20 @@ QPushButton:pressed {
    <property name="styleSheet">
     <string notr="true">font: 11pt &quot;MV Boli&quot;;
 background: transparent;
- selection-background-color: rgb(233, 99, 0); </string>
+ selection-background-color: transparent; </string>
    </property>
   </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>210</y>
+     <y>200</y>
      <width>251</width>
      <height>161</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 9pt &quot;MV Boli&quot;;
-color: white;</string>
+    <string notr="true">color: white;</string>
    </property>
    <property name="title">
     <string>Password</string>
@@ -469,16 +467,16 @@ QPushButton:pressed {
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>390</y>
+     <y>380</y>
      <width>121</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	color: rgb(255, 56, 38);	
 	border: 1px solid rgb(255, 56, 38);
-	font: 12pt &quot;MV Boli&quot;;
+	font: italic 15pt &quot;Harlow Solid Italic&quot;
 }
 
 QPushButton:hover { 

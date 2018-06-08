@@ -69,13 +69,13 @@ LogIn::~LogIn()
 
 void LogIn::on_btn_login_clicked()
 {
-    QString q_str_new("QPushButton {color: yellow; border: 1px solid yellow;}"
-                      "QPushButton:hover {background-color: rgba(255, 255, 0, .2);}"
-                      "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+    QString q_str_new("QPushButton {color: #FAE6AA;	border: 1px solid #FAE6AA;font: italic 15pt 'Harlow Solid Italic';}"
+                      "QPushButton:hover {background-color: #FAE6AA;color: black;}"
+                      "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
-    QString q_str_old("QPushButton {color: white; border: 1px solid white;}"
-                      "QPushButton:hover {background-color: rgba(0, 187, 193, .4);}"
-                      "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+    QString q_str_old("QPushButton {color: white;border: 1px solid white;font: italic 15pt 'Harlow Solid Italic';}"
+                      "QPushButton:hover {background-color: white;color: black;}"
+                      "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
     ui->btn_login->setStyleSheet(q_str_new);
 
@@ -86,13 +86,13 @@ void LogIn::on_btn_login_clicked()
 
 void LogIn::on_btn_new_clicked()
 {
-    QString q_str_new("QPushButton {color: yellow; border: 1px solid yellow;}"
-                      "QPushButton:hover {background-color: rgba(255, 255, 0, .2);}"
-                      "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+    QString q_str_new("QPushButton {color: #FAE6AA;	border: 1px solid #FAE6AA;font: italic 15pt 'Harlow Solid Italic';}"
+                      "QPushButton:hover {background-color: #FAE6AA;color: black;}"
+                      "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
-    QString q_str_old("QPushButton {color: white; border: 1px solid white;}"
-                      "QPushButton:hover {background-color: rgba(0, 187, 193, .4);}"
-                      "QPushButton:pressed {color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
+    QString q_str_old("QPushButton {color: white;border: 1px solid white;font: italic 15pt 'Harlow Solid Italic';}"
+                      "QPushButton:hover {background-color: white;color: black;}"
+                      "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
     ui->btn_login->setStyleSheet(q_str_old);
 
@@ -119,7 +119,7 @@ void LogIn::on_btn_start_clicked()
 
     if (users.length() < 2)
     {
-        users.push_back(new User(user_name, pattern));
+        users.push_back(new User(user_name, pattern, is_login));
 
         if (is_login && !users.last()->getExist()) // El usuario no se encuentra creado.
         {
@@ -161,6 +161,8 @@ void LogIn::on_btn_start_clicked()
 
             if (is_multiplayer) // Si es multiplayer enviamos el otro usuario.
             {
+                ui->lbl_info->setText("Second Player");
+
                 sc.setPlayer_2(users.last());
             }
 

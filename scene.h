@@ -114,6 +114,8 @@ private:
 
     bool is_multiplayer;
 
+    bool is_second; // Juega el segundo.
+
     bool is_start; // Inicio el juego o lo pausó.
 
     bool next; // Siguiente objeto.

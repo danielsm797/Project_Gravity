@@ -17,11 +17,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btn_multiplayer_clicked()
 {
-    QString q_str_new("QPushButton {color: #FAE6AA;	border: 1px solid #FAE6AA;font: 11pt 'MV Boli';}"
+    QString q_str_new("QPushButton {color: #FAE6AA;	border: 1px solid #FAE6AA;font: italic 15pt 'Harlow Solid Italic';}"
                       "QPushButton:hover {background-color: #FAE6AA;color: black;}"
                       "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
-    QString q_str_old("QPushButton {color: white;border: 1px solid white;font: 11pt 'MV Boli';}"
+    QString q_str_old("QPushButton {color: white;border: 1px solid white;font: italic 15pt 'Harlow Solid Italic';}"
                       "QPushButton:hover {background-color: white;color: black;}"
                       "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
@@ -34,11 +34,11 @@ void MainWindow::on_btn_multiplayer_clicked()
 
 void MainWindow::on_btn_singleplayer_clicked()
 {
-    QString q_str_new("QPushButton {color: #FAE6AA;	border: 1px solid #FAE6AA;font: 11pt 'MV Boli';}"
+    QString q_str_new("QPushButton {color: #FAE6AA;	border: 1px solid #FAE6AA;font: italic 15pt 'Harlow Solid Italic';}"
                       "QPushButton:hover {background-color: #FAE6AA;color: black;}"
                       "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 
-    QString q_str_old("QPushButton {color: white;border: 1px solid white;font: 11pt 'MV Boli';}"
+    QString q_str_old("QPushButton {color: white;border: 1px solid white;font: italic 15pt 'Harlow Solid Italic';}"
                       "QPushButton:hover {background-color: white;color: black;}"
                       "QPushButton:pressed { color: #F3A71E;border: 1px solid #F3A71E;background-color: rgba(0, 0, 0, .4);}");
 

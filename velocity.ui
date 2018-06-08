@@ -52,7 +52,7 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>10</x>
      <y>10</y>
      <width>271</width>
      <height>21</height>
@@ -60,7 +60,7 @@
    </property>
    <property name="styleSheet">
     <string notr="true">color:white;
-font: 12pt &quot;MV Boli&quot;;</string>
+font: italic 15pt &quot;Harlow Solid Italic&quot;;</string>
    </property>
    <property name="text">
     <string>Presione la tecla 'P' para detener</string>
@@ -83,7 +83,7 @@ font: 12pt &quot;MV Boli&quot;;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">color: white;
-font: 12pt &quot;MV Boli&quot;;</string>
+font: italic 15pt &quot;Harlow Solid Italic&quot;;</string>
    </property>
    <property name="text">
     <string>el medidor.</string>

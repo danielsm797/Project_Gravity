@@ -40,16 +40,16 @@
    <property name="geometry">
     <rect>
      <x>820</x>
-     <y>590</y>
+     <y>580</y>
      <width>131</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	color: rgb(255, 56, 38);	
 	border: 1px solid rgb(255, 56, 38);
-	font: 12pt &quot;MV Boli&quot;;
+		font: italic 15pt &quot;Harlow Solid Italic&quot;;
 }
 
 QPushButton:hover { 
@@ -81,8 +81,7 @@ QPushButton:pressed {
    </property>
    <property name="styleSheet">
     <string notr="true">color: #6D8E99;
-border: 0px;
-font: 8pt &quot;MV Boli&quot;;</string>
+border: 0px;</string>
    </property>
    <property name="title">
     <string>Player 1</string>
@@ -100,7 +99,7 @@ font: 8pt &quot;MV Boli&quot;;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 16pt &quot;MV Boli&quot;;
+     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
 color: #FAE6AA;</string>
     </property>
     <property name="text">
@@ -120,8 +119,7 @@ color: #FAE6AA;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 9pt &quot;MV Boli&quot;;
-color: white;</string>
+     <string notr="true">color: white;</string>
     </property>
     <property name="text">
      <string>User name</string>
@@ -137,7 +135,7 @@ color: white;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 16pt &quot;MV Boli&quot;;
+     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
 color: #FAE6AA;</string>
     </property>
     <property name="text">
@@ -157,8 +155,7 @@ color: #FAE6AA;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 9pt &quot;MV Boli&quot;;
-color: white;</string>
+     <string notr="true">color: white;</string>
     </property>
     <property name="text">
      <string>score</string>
@@ -176,8 +173,7 @@ color: white;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">color: #6D8E99;
-border: 0px;
-font: 8pt &quot;MV Boli&quot;;</string>
+border: 0px;</string>
    </property>
    <property name="title">
     <string>Player 2</string>
@@ -192,7 +188,7 @@ font: 8pt &quot;MV Boli&quot;;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 9pt &quot;MV Boli&quot;;
+     <string notr="true">
 color: white;</string>
     </property>
     <property name="text">
@@ -249,7 +245,7 @@ color: #FAE6AA;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 9pt &quot;MV Boli&quot;;
+     <string notr="true">
 color: white;</string>
     </property>
     <property name="text">
@@ -261,16 +257,16 @@ color: white;</string>
    <property name="geometry">
     <rect>
      <x>820</x>
-     <y>430</y>
+     <y>420</y>
      <width>131</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	color: #FAE6AA;	
 	border: 1px solid #FAE6AA;
-	font: 11pt &quot;MV Boli&quot;;
+	font: italic 15pt &quot;Harlow Solid Italic&quot;;
 }
 
 QPushButton:hover { 
@@ -297,14 +293,14 @@ QPushButton:pressed {
      <x>820</x>
      <y>470</y>
      <width>131</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	color: #FAE6AA;	
 	border: 1px solid #FAE6AA;
-	font: 11pt &quot;MV Boli&quot;;
+	font: italic 15pt &quot;Harlow Solid Italic&quot;;
 }
 
 QPushButton:hover { 
@@ -345,16 +341,16 @@ QPushButton:pressed {
    <property name="geometry">
     <rect>
      <x>820</x>
-     <y>340</y>
+     <y>330</y>
      <width>131</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	color: #FAE6AA;	
 	border: 1px solid #FAE6AA;
-	font: 11pt &quot;MV Boli&quot;;
+	font: italic 15pt &quot;Harlow Solid Italic&quot;;
 }
 
 QPushButton:hover { 
@@ -380,13 +376,13 @@ QPushButton:pressed {
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>81</width>
-     <height>20</height>
+     <width>91</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: 11pt &quot;MV Boli&quot;;
-color: #FAE6AA;</string>
+    <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
+color: rgb(255, 187, 28);</string>
    </property>
    <property name="text">
     <string>Level 1</string>

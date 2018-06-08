@@ -20,6 +20,7 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
     limit = false;
     next = true;
     is = false;
+    is_second = false;
 
     current_level = 0;
 
@@ -276,7 +277,14 @@ void Scene::mov_planet()
                     {
                         tg->play_sound();
 
-                        score.first() += tg->getScore();
+                        if (!is_second)
+                        {
+                            score.first() += tg->getScore();
+                        }
+                        else
+                        {
+                            score.last() += tg->getScore();
+                        }
 
                         gc->removeItem(tg); // Eliminamos el objetivo.
 
@@ -291,7 +299,14 @@ void Scene::mov_planet()
 
                     // planets.first()->setMode(1);
 
-                    score.first() -= tg->getScore();
+                    if (!is_second)
+                    {
+                        score.first() -= tg->getScore();
+                    }
+                    else
+                    {
+                        score.last() -= tg->getScore();
+                    }
 
                     // Obtenemos un número aleatorio del 1 al 4.
                     int ale = 1 + qrand() % 4;
@@ -358,27 +373,7 @@ void Scene::mov_planet()
 
                 set_score();
 
-                if(tg->getType() == 2)
-                {
-                    // Validamos si hay objetivos.
-                    if (targets_count() == 0)
-                    {
-                        tim_cue->stop();
-
-                        det.set_score(score.first(), score.last());
-
-                        det.exec();
-
-                        if (!det.getNext())
-                        {
-                            this->close();
-                        }
-
-                        id_scene = 0;
-                    }
-                }
-
-                return;
+                break;
             }
         }
 
@@ -913,18 +908,43 @@ void Scene::delete_planet()
     tacos.last()->setPos_y(80);
     tacos.last()->set_position();
 
-    if (planets.isEmpty() || tarbar.isEmpty())
+    if (targets_count() == 0 || planets.isEmpty())
     {
-        det.set_score(score.first(), score.last());
+        qDebug() << is_multiplayer << " - " << is_second;
 
-        det.exec();
-
-        if (!det.getNext())
+        if (is_multiplayer && !is_second)
         {
-            this->close();
-        }
+            clear_scene();
 
-        id_scene = 0;
+            set_planets();
+
+            set_tacos();
+
+            set_targets(levels.at(current_level)->getTargets());
+
+            set_barriers(levels.at(current_level)->getBarrier());
+
+            set_powers(levels.at(current_level)->getPowers(), true);
+
+            set_score();
+
+            is_second = true;
+        }
+        else
+        {
+            tim_cue->stop();
+
+            det.set_score(score.first(), score.last());
+
+            det.exec();
+
+            if (!det.getNext())
+            {
+                this->close();
+            }
+
+            id_scene = 0;
+        }
     }
 }
 
