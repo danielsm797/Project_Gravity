@@ -37,7 +37,8 @@ SOURCES += \
     velocity.cpp \
     physics.cpp \
     targetbarrier.cpp \
-    detail.cpp
+    detail.cpp \
+    extra.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -51,7 +52,8 @@ HEADERS += \
     velocity.h \
     physics.h \
     targetbarrier.h \
-    detail.h
+    detail.h \
+    extra.h
 
 FORMS += \
         mainwindow.ui \

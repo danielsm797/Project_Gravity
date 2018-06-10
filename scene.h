@@ -9,6 +9,7 @@
 #include <QGraphicsItem>
 #include <QMediaPlayer>
 #include <fstream>
+#include <QKeyEvent>
 #include <time.h>
 #include <QToolTip>
 #include <QFontDatabase>
@@ -18,6 +19,7 @@
 #include "level.h"
 #include "velocity.h"
 #include "targetbarrier.h"
+#include "extra.h"
 #include "detail.h"
 #include "taco.h"
 
@@ -86,6 +88,14 @@ public:
 
     void next_level();
 
+    void keyPressEvent(QKeyEvent *e_);
+
+    bool validate_pos(int tipo);
+
+    void extra();
+
+    void colliding_extra();
+
 signals:
 
     void open(bool is_multi);
@@ -108,6 +118,8 @@ private slots:
 
     void rot_ele();
 
+    void time_tor();
+
     void on_btn_save_clicked();
 
     void on_btn_load_clicked();
@@ -128,7 +140,13 @@ private:
 
     bool is; // Entró al scene.
 
+    bool is_tor; // Esta en modo tormenta.
+
+    bool can_move; // Puede moverse.
+
     int current_level; // Id del nivel actual.
+
+    int seconds; // Número de segundos.
 
     QVector<int> ids_game; // Id de los juegos.
 
@@ -158,6 +176,8 @@ private:
 
     QMediaPlayer *sou_back;
 
+    QVector<Extra *> extra_;
+
     QGraphicsScene *gc;
 
     QTimer *tim_poder;
@@ -169,6 +189,8 @@ private:
     QTimer *tim_cue;
 
     QTimer *tim_rot;
+
+    QTimer *tim_tor;
 
     Velocity vel;
 

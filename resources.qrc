@@ -1,47 +1,53 @@
 <RCC>
     <qresource prefix="/Img">
-        <file>1.png</file>
-        <file>2.png</file>
-        <file>3.png</file>
-        <file>4.png</file>
-        <file>5.png</file>
-        <file>6.png</file>
-        <file>7.png</file>
-        <file>8.png</file>
-        <file>9.png</file>
-        <file>10.png</file>
-        <file>11.png</file>
-        <file>12.png</file>
-        <file>13.png</file>
-        <file>14.png</file>
-        <file>asteroid.png</file>
-        <file>asteroid-1.png</file>
-        <file>asteroid-2.png</file>
-        <file>back.png</file>
-        <file>back-game.jpg</file>
-        <file>back-modal.jpg</file>
-        <file>icon.png</file>
-        <file>pin.png</file>
-        <file>taco.png</file>
+        <file>w.png</file>
         <file>taco_h.png</file>
-        <file>colors.png</file>
-        <file>comet.png</file>
-        <file>mov1.png</file>
+        <file>taco.png</file>
+        <file>s.png</file>
+        <file>pin.png</file>
         <file>mov2.png</file>
-        <file>back-game-1.jpg</file>
+        <file>mov1.png</file>
+        <file>medal.png</file>
+        <file>icon.png</file>
+        <file>d.png</file>
+        <file>comet.png</file>
+        <file>colors.png</file>
+        <file>back.png</file>
+        <file>asteroid-2.png</file>
+        <file>asteroid-1.png</file>
+        <file>asteroid.png</file>
+        <file>a.png</file>
+        <file>14.png</file>
+        <file>12.png</file>
+        <file>11.png</file>
+        <file>10.png</file>
+        <file>9.png</file>
+        <file>8.png</file>
+        <file>7.png</file>
+        <file>6.png</file>
+        <file>5.png</file>
+        <file>4.png</file>
+        <file>3.png</file>
+        <file>2.png</file>
+        <file>1.png</file>
+        <file>back-modal.jpg</file>
         <file>back-game-2.jpg</file>
-    </qresource>
-    <qresource prefix="/Sounds">
-        <file>abs.mp3</file>
-        <file>exp.mp3</file>
-        <file>par.mp3</file>
-        <file>tac.mp3</file>
-        <file>bad.mp3</file>
-        <file>bak.mp3</file>
-        <file>good.mp3</file>
-        <file>pow.mp3</file>
+        <file>back-game-1.jpg</file>
+        <file>back-game.jpg</file>
     </qresource>
     <qresource prefix="/Fonts">
         <file>SpecialElite-Regular.ttf</file>
+    </qresource>
+    <qresource prefix="/Sounds">
+        <file>abs.mp3</file>
+        <file>bad.mp3</file>
+        <file>bak.mp3</file>
+        <file>exp.mp3</file>
+        <file>ext.mp3</file>
+        <file>good.mp3</file>
+        <file>par.mp3</file>
+        <file>pow.mp3</file>
+        <file>tac.mp3</file>
+        <file>cex.wav</file>
     </qresource>
 </RCC>

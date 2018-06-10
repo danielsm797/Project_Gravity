@@ -24,7 +24,7 @@ void Detail::set_score(int one, int two, int can, bool is_)
         }
         else
         {
-            ui->lbl_info->setText("You wim");
+            ui->lbl_info->setText("You win");
         }
 
         return;

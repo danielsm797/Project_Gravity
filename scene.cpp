@@ -3,6 +3,8 @@
 
 int angulo = 0;
 
+bool est_bef = false;
+
 Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
 {
     ui->setupUi(this);
@@ -17,12 +19,22 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
     id_scene = 0;
 
     is_start = false;
+
+    can_move = false;
+
     limit = false;
+
     next = true;
+
+    is_tor = false;
+
     is = false;
+
     is_second = false;
 
-    current_level = 0;
+    current_level = 2;
+
+    seconds = 40;
 
     connect(this, SIGNAL(open(bool)), this, SLOT(rec_open(bool)));
 
@@ -44,7 +56,14 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
     sounds.append(new QMediaPlayer());
     sounds.last()->setMedia(QUrl("qrc:/Sounds/par.mp3"));
 
+    sounds.append(new QMediaPlayer());
+    sounds.last()->setMedia(QUrl("qrc:/Sounds/ext.mp3"));
+
+    sounds.append(new QMediaPlayer());
+    sounds.last()->setMedia(QUrl("qrc:/Sounds/cex.wav"));
+
     QPen myPen = QPen(Qt::white);
+
     myPen.setStyle(Qt::SolidLine);
 
     QLineF topLine(gc->sceneRect().topLeft(), gc->sceneRect().topRight());
@@ -88,6 +107,9 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
     connect(tim_poder, SIGNAL(timeout()), this, SLOT(pow_move()));
     tim_poder->start(70);
 
+    tim_tor = new QTimer();
+    connect(tim_tor, SIGNAL(timeout()), this, SLOT(time_tor()));
+
     tim_rot = new QTimer();
     connect(tim_rot, SIGNAL(timeout()), this, SLOT(rot_ele()));
     tim_rot->start(200);
@@ -118,9 +140,13 @@ Scene::~Scene()
 
     delete tim_ver;
 
+    delete tim_cue;
+
     delete tim_poder;
 
     delete tim_rot;
+
+    delete tim_tor;
 
     delete sou_back;
 
@@ -145,6 +171,8 @@ void Scene::rec_open(bool is_multi)
 
     ui->lbl_score1->setText(QString::number(score.first()));
 
+    ui->lbl_score2->setText(QString::number(score.last()));
+
     if (is_multiplayer)
     {
         ui->lbl_namePlayer2->setText(player_2->getUser_name());
@@ -162,7 +190,7 @@ void Scene::hor_move()
     {
         if (planets.first()->getVel_x() == 0)
         {
-            tim_cue->start(8);
+            tim_cue->start(7);
 
             tacos.first()->set_position();
 
@@ -203,7 +231,7 @@ void Scene::ver_move()
 
         sounds.at(1)->play();
 
-        tim_cue->start(8);
+        tim_cue->start(7);
     }
 }
 
@@ -244,6 +272,8 @@ void Scene::mov_planet()
 
         QTimer * tim = vel.getTimer();
         tim->start(10);
+
+        vel.setY(false);
         vel.exec();
 
         planets.first()->setVel_x(vel.getVel_x());
@@ -255,6 +285,11 @@ void Scene::mov_planet()
 
     if (planets.first()->getPos_x() <= 700)
     {
+        if (!is && !is_tor)
+        {
+            tim_tor->start(1000);
+        }
+
         is = true;
     }
 
@@ -273,7 +308,7 @@ void Scene::mov_planet()
                 // Restamos o sumamos los puntos.
                 if (tg->getType() == 2)
                 {
-                    if ((tg->getPos_x() - planets.first()->getPos_x()) < 10 && (tg->getPos_y() - planets.first()->getPos_y()) < 10)
+                    if ( abs((tg->getPos_x() - planets.first()->getPos_x())) < 20 && abs((tg->getPos_y() - planets.first()->getPos_y())) < 20)
                     {
                         tg->play_sound();
 
@@ -342,7 +377,7 @@ void Scene::mov_planet()
                     }
 
                     planets.first()->set_position();
-                    tim_cue->start(8);
+                    tim_cue->start(7);
                 }
                 else if (planets.first()->getMode() == 1)
                 {
@@ -371,7 +406,7 @@ void Scene::mov_planet()
 
                     tim_poder->start(70);
 
-                    tim_cue->start(8);
+                    tim_cue->start(7);
                 }
 
                 set_score();
@@ -381,7 +416,7 @@ void Scene::mov_planet()
         }
 
         // validamos si colisiono con una pared.
-        bool resp = planets.first()->border(sounds.last());
+        bool resp = planets.first()->border(sounds.at(3));
 
         if (resp)
         {
@@ -420,6 +455,53 @@ void Scene::rot_ele()
             }
         }
     }
+}
+
+void Scene::time_tor()
+{
+    if (seconds == 0)
+    {
+        sounds.at(4)->play();
+
+        if (is_tor)
+        {
+            tim_tor->stop();
+
+            seconds = 40;
+
+            // Limpiamos los extras.
+            int cant = extra_.length();
+            for (int j = 0; j < cant; j++)
+            {
+                delete extra_.at(j);
+            }
+
+            can_move = false;
+
+            tim_cue->start(7);
+        }
+        else
+        {
+            is_tor = true;
+
+            can_move = true;
+
+            tim_cue->stop();
+
+            seconds = 10;
+
+            extra();
+        }
+    }
+
+    QString str = "00:00:";
+
+    if (seconds < 10)
+    {
+        str.append("0");
+    }
+
+    ui->lbl_time->setText(str.append(QString::number(seconds--)));
 }
 
 User *Scene::getPlayer_2() const
@@ -646,7 +728,7 @@ void Scene::load_game()
             }
 
             // Ponemos el nombre del nivel.
-            QString llv = "Level ";
+            QString llv = "level ";
             llv.append(QString::number(current_level + 1));
             ui->lbl_level->setText(llv);
 
@@ -659,7 +741,19 @@ void Scene::load_game()
 
             vel.setY(fir_list.at(10) == "1");
 
-            is_multiplayer = fir_list.last() == "1";
+            is_multiplayer = fir_list.at(11) == "1";
+
+            QString sec_ = fir_list.at(12);
+            seconds = sec_.toInt();
+
+            is_tor = fir_list.at(13) == "1";
+
+            if (fir_list.at(14) == "1")
+            {
+                tim_tor->start(1000);
+            }
+
+            can_move = fir_list.last() == "1";
 
             ui->btn_start->setText("Continue");
 
@@ -809,8 +903,11 @@ void Scene::read_level()
             one = data.at(0);
             levels.at(ind)->setId_level(one.toInt());
 
-            QString level_name = "Level ";
-            ui->lbl_level->setText(level_name.append(one));
+            if (ind == current_level)
+            {
+                QString level_name = "level ";
+                ui->lbl_level->setText(level_name.append(one));
+            }
 
             one = data.at(1);
             levels.at(ind)->setCoe_res(one.toFloat());
@@ -922,6 +1019,8 @@ void Scene::delete_planet()
     tacos.last()->setPos_y(80);
     tacos.last()->set_position();
 
+    tim_tor->stop();
+
     int t_c = targets_count();
 
     if (t_c == 0 || planets.isEmpty())
@@ -973,7 +1072,16 @@ void Scene::delete_planet()
                     // Next level.
                     current_level += 1;
 
-                    QString level_name = "Level ";
+                    if (current_level > 2)
+                    {
+                        QMessageBox msg(QMessageBox::Information, "Gravity", "Fin del juego.", QMessageBox::Ok, this);
+                        msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+                        msg.exec();
+
+                        this->close();
+                    }
+
+                    QString level_name = "level ";
                     ui->lbl_level->setText(level_name.append(QString::number(current_level + 1)));
 
                     if (current_level == 1)
@@ -991,6 +1099,7 @@ void Scene::delete_planet()
                 is_second = false;
 
                 score.first() = 0;
+
                 score.last() = 0;
 
                 next_level();
@@ -1123,12 +1232,17 @@ void Scene::on_btn_start_clicked()
 
             move_list();
 
+            vel.setY(true);
+            vel.setVel_y(0);
+
             // Inicializamos el timer del pin.
             QTimer * tim = vel.getTimer();
             tim->start(10);
             vel.exec();
 
             vel.setY(false);
+
+            qDebug() << vel.getVel_x() << " - " << vel.getVel_y();
 
             // Obtenemos la velocidad.
             planets.first()->setVel_y(vel.getVel_y());
@@ -1143,9 +1257,14 @@ void Scene::on_btn_start_clicked()
         {
             tim_ver->start(50);
 
-            tim_cue->start(8);
+            tim_cue->start(7);
 
             tim_poder->start(70);
+
+            if (est_bef)
+            {
+                tim_tor->start(1000);
+            }
         }
     }
     else
@@ -1158,6 +1277,10 @@ void Scene::on_btn_start_clicked()
 
         tim_poder->stop();
 
+        est_bef = tim_tor->isActive();
+
+        tim_tor->stop();
+
         ui->btn_start->setText("Continue");
     }
 
@@ -1166,21 +1289,16 @@ void Scene::on_btn_start_clicked()
 
 void Scene::on_btn_save_clicked()
 {
-    //    if (!is_start)
-    //    {
-    //        QMessageBox msg(QMessageBox::Critical, "Gravity", "No se puede guardar la partida, primero se tiene que empezar", QMessageBox::Ok, this);
-    //        msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
-    //        msg.exec();
-
-    //        return;
-    //    }
-
     get_lastId(); // Obtenemos el último id.
 
     tim_hor->stop();
     tim_ver->stop();
     tim_cue->stop();
     tim_poder->stop();
+
+    bool est = tim_tor->isActive();
+
+    tim_tor->stop();
 
     /*
         Creamos el archivo y reiniciamos el juego.
@@ -1213,9 +1331,17 @@ void Scene::on_btn_save_clicked()
     if (over == 3)
     {
         tim_hor->start(40);
+
         tim_ver->start(50);
+
         tim_poder->start(70);
-        tim_cue->start(8);
+
+        tim_cue->start(7);
+
+        if (est)
+        {
+            tim_tor->start(1000);
+        }
 
         return;
     }
@@ -1228,29 +1354,38 @@ void Scene::on_btn_save_clicked()
     }
 
     // Encabezado
-    dta.append(QString::number(id_scene));
-    dta.append(";");
-    dta.append(QString::number(current_level));
-    dta.append(";");
-    dta.append(tim_hor->isActive() ? "1" : "0"); // 1 si el taco 1 está moviendose.
-    dta.append(";");
-    dta.append(tim_ver->isActive() ? "1" : "0"); // 1 si el taco 2 está moviendose.
-    dta.append(";");
-    dta.append(ui->lbl_score1->text()); // Puntos del jugador 1
-    dta.append(";");
-    dta.append(ui->lbl_score2->text()); // Puntos del jugador 2
-    dta.append(";");
-    dta.append(next ? "1" : "0"); // Variable next
-    dta.append(";");
-    dta.append(limit ? "1" : "0"); // Variable limit
-    dta.append(";");
-    dta.append(is ? "1" : "0"); // Variable is
-    dta.append(";");
-    dta.append(is_start ? "1" : "0"); // Variable is_start
-    dta.append(";");
-    dta.append(vel.getY() ? "1" : "0"); // Variable vel del velocimetro
-    dta.append(";");
-    dta.append(is_multiplayer ? "1" : "0");
+    dta.append(QString::number(id_scene).append(";"));
+
+    dta.append(QString::number(current_level).append(";"));
+
+    dta.append(tim_hor->isActive() ? "1;" : "0;");  // 1 si el taco 1 está moviendose.
+
+    dta.append(tim_ver->isActive() ? "1;" : "0;");  // 1 si el taco 2 está moviendose.
+
+    dta.append(ui->lbl_score1->text().append(";")); // Puntos del jugador 1
+
+    dta.append(ui->lbl_score2->text().append(";")); // Puntos del jugador 2
+
+    dta.append(next ? "1;" : "0;");     // Variable next
+
+    dta.append(limit ? "1;" : "0;");    // Variable limit
+
+    dta.append(is ? "1;" : "0;");       // Variable is
+
+    dta.append(is_start ? "1;" : "0;"); // Variable is_start
+
+    dta.append(vel.getY() ? "1;" : "0;");       // Variable vel del velocimetro
+
+    dta.append(is_multiplayer ? "1;" : "0;");   // Guarda si la partida es multiplayer o no.
+
+    dta.append(QString::number(seconds).append(";")); // Número de segundos.
+
+    dta.append(is_tor ? "1;" : "0;");                 // Variable que controla la tormenta.
+
+    dta.append(tim_tor->isActive() ? "1;" : "0;");      // Estado del timer.
+
+    dta.append(can_move ? "1" : "0");                   // Puede moverse.
+
     dta.append("@");
 
     // Insertamos los planetas.
@@ -1396,7 +1531,12 @@ void Scene::on_btn_save_clicked()
     tim_hor->start(40);
     tim_ver->start(50);
     tim_poder->start(70);
-    tim_cue->start(8);
+    tim_cue->start(7);
+
+    if (est)
+    {
+        tim_tor->start(1000);
+    }
 }
 
 void Scene::on_btn_load_clicked()
@@ -1433,9 +1573,14 @@ void Scene::on_btn_load_clicked()
     id_lg.push_front("Se cargará la partida número ");
 
     tim_cue->stop();
+
     tim_hor->stop();
+
     tim_ver->stop();
+
     tim_poder->stop();
+
+    tim_tor->stop();
 
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Gravity", id_lg, QMessageBox::Yes | QMessageBox::No);
@@ -1452,7 +1597,7 @@ void Scene::on_btn_load_clicked()
     {
         tim_hor->start(40);
         tim_ver->start(50);
-        tim_cue->start(8);
+        tim_cue->start(7);
     }
 }
 
@@ -1537,6 +1682,8 @@ void Scene::is_multi(int id_s)
 
 void Scene::next_level()
 {
+    qDebug() << "ok";
+
     clear_scene();
 
     set_planets();
@@ -1555,10 +1702,176 @@ void Scene::next_level()
     set_barriers(levels.at(current_level)->getBarrier());
 
     set_powers(levels.at(current_level)->getPowers(), true);
+
+    seconds = 40;
+
+    is_tor = false;
+
+    ui->lbl_time->setText("00:00:40");
+}
+
+void Scene::keyPressEvent(QKeyEvent *e_)
+{
+    if (!can_move)
+    {
+        return;
+    }
+
+    bool resp = false;
+
+    if (e_->key() == Qt::Key_W) // Up
+    {
+        resp = validate_pos(1);
+
+        if (resp)
+        {
+            // Cambiamos la imagen.
+
+            planets.first()->setPos_y(planets.first()->getPos_y() - 3);
+            planets.first()->set_position();
+            colliding_extra();
+        }
+    }
+    else if  (e_->key() == Qt::Key_A) // Left
+    {
+        resp = validate_pos(2);
+
+        if (resp)
+        {
+            planets.first()->setPos_x(planets.first()->getPos_x() - 3);
+            planets.first()->set_position();
+            colliding_extra();
+        }
+    }
+    else if  (e_->key() == Qt::Key_S) // Down
+    {
+        resp = validate_pos(3);
+
+        if (resp)
+        {
+            planets.first()->setPos_y(planets.first()->getPos_y() + 3);
+            planets.first()->set_position();
+            colliding_extra();
+        }
+    }
+    else if  (e_->key() == Qt::Key_D) // Right
+    {
+        resp = validate_pos(4);
+
+        if (resp)
+        {
+            planets.first()->setPos_x(planets.first()->getPos_x() + 3);
+            planets.first()->set_position();
+            colliding_extra();
+        }
+    }
+}
+
+bool Scene::validate_pos(int tipo)
+{
+    bool resp = true;
+
+    switch (tipo) {
+    case 1:
+
+        if ((planets.first()->getPos_y() - 3) < 11)
+        {
+            resp = false;
+        }
+
+        break;
+    case 2:
+
+        if ((planets.first()->getPos_x() - 3) < 11)
+        {
+            resp = false;
+        }
+
+        break;
+    case 3:
+
+        if ((planets.first()->getPos_y() + 3) > 540)
+        {
+            resp = false;
+        }
+
+        break;
+    case 4:
+
+        if ((planets.first()->getPos_x() + 3) > 700)
+        {
+            resp = false;
+        }
+
+        break;
+    }
+
+    return resp;
+}
+
+void Scene::extra()
+{
+    extra_.clear();
+
+    // Creamos aleatorio 8 objetos.
+    for (int i = 0; i < 8; i++)
+    {
+        float x = aleatorio(16, 660);
+        float y = aleatorio(16, 510);
+
+        extra_.append(new Extra(x, y));
+        gc->addItem(extra_.last());
+        extra_.last()->set_position();
+    }
+}
+
+void Scene::colliding_extra()
+{
+    /*
+        Validamos si el planeta colisionó con uno de los objetos extras y
+        sumamos cierta cantidad de puntos si en realidad colisionó.
+    */
+
+    int l = extra_.length();
+    for (int i = 0; i < l; i++)
+    {
+        if (extra_.at(i)->collidesWithItem(planets.first()))
+        {
+            sounds.last()->play();
+
+            if (!is_multiplayer)
+            {
+                score.first() += 7;
+            }
+            else
+            {
+                if (is_second)
+                {
+                    score.last() += 7;
+                }
+                else
+                {
+                    score.first() += 7;
+                }
+            }
+
+            set_score(); // Actualizamos los puntos en la vista.
+
+            gc->removeItem(extra_.at(i));
+            extra_.removeAt(i);
+
+            break;
+        }
+    }
 }
 
 QString Scene::remove_game()
 {
+    /*
+        Leemos el archivo de los juegos guardados y eliminamos la partida
+        actual siempre y cuando esté almacenada, con el fin de sobreescribirla.
+    */
+
     QString resp = "";
 
     ifstream ifs;

@@ -40,7 +40,7 @@
    <property name="geometry">
     <rect>
      <x>820</x>
-     <y>580</y>
+     <y>590</y>
      <width>131</width>
      <height>41</height>
     </rect>
@@ -171,7 +171,7 @@ font-size: 13px;</string>
    <property name="geometry">
     <rect>
      <x>810</x>
-     <y>190</y>
+     <y>160</y>
      <width>141</width>
      <height>131</height>
     </rect>
@@ -262,10 +262,10 @@ font-size: 13px;</string>
   <widget class="QPushButton" name="btn_save">
    <property name="geometry">
     <rect>
-     <x>820</x>
-     <y>440</y>
-     <width>131</width>
-     <height>41</height>
+     <x>800</x>
+     <y>490</y>
+     <width>81</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -273,7 +273,7 @@ font-size: 13px;</string>
 	background-color: #97493A;
 	color: white;
 	border: 2px solid #97493A;
-	font: 63 14pt &quot;Segoe UI Semibold&quot;;
+	font: 63 10pt &quot;Segoe UI Semibold&quot;;
 }
 
 QPushButton:hover { 
@@ -298,10 +298,10 @@ QPushButton:pressed {
   <widget class="QPushButton" name="btn_load">
    <property name="geometry">
     <rect>
-     <x>820</x>
+     <x>890</x>
      <y>490</y>
-     <width>131</width>
-     <height>41</height>
+     <width>81</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -309,7 +309,7 @@ QPushButton:pressed {
 	background-color: #97493A;
 	color: white;
 	border: 2px solid #97493A;
-	font: 63 14pt &quot;Segoe UI Semibold&quot;;
+	font: 63 10pt &quot;Segoe UI Semibold&quot;;
 }
 
 QPushButton:hover { 
@@ -351,7 +351,7 @@ QPushButton:pressed {
    <property name="geometry">
     <rect>
      <x>820</x>
-     <y>350</y>
+     <y>540</y>
      <width>131</width>
      <height>41</height>
     </rect>
@@ -386,18 +386,21 @@ QPushButton:pressed {
   <widget class="QLabel" name="lbl_level">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>10</y>
+     <x>20</x>
+     <y>20</y>
      <width>111</width>
-     <height>41</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
-color: #FFD502</string>
+color: #FFD502;
+border: 2px solid #FFD502;
+border-radius: 15px;
+background-color: rgba(0,0,0,.3)</string>
    </property>
    <property name="text">
-    <string>Level 1</string>
+    <string>level 1</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -406,15 +409,18 @@ color: #FFD502</string>
   <widget class="QLabel" name="lbl_turno">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>500</x>
      <y>20</y>
-     <width>161</width>
-     <height>31</height>
+     <width>191</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
-color: #FFD502</string>
+color: #FFD502;
+border: 2px solid #FFD502;
+border-radius: 15px;
+background-color: rgba(0,0,0,.3)</string>
    </property>
    <property name="text">
     <string>Player 1 is playing...</string>
@@ -427,24 +433,176 @@ color: #FFD502</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>590</y>
+     <y>530</y>
      <width>161</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: italic 18pt &quot;Harlow Solid Italic&quot;;
-color: #9D1ED8;
-background-color: white;
-border-radius: 15px;</string>
+    <string notr="true">font: italic 20pt &quot;Harlow Solid Italic&quot;;
+color: rgb(168, 255, 87);
+background-color: transparent;
+background-color: rgba(0,0,0,.5);
+border-radius: 15px;
+border: 2px solid rgb(168, 255, 87);</string>
    </property>
    <property name="text">
-    <string>00:00:60</string>
+    <string>00:00:40</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  <widget class="QGroupBox" name="gb_controlls">
+   <property name="geometry">
+    <rect>
+     <x>800</x>
+     <y>310</y>
+     <width>171</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(255, 255, 255, 0.1);
+color: black;
+font: italic 15pt &quot;Harlow Solid Italic&quot;;
+border: 0px;</string>
+   </property>
+   <property name="title">
+    <string notr="true">Controlls</string>
+   </property>
+   <property name="flat">
+    <bool>false</bool>
+   </property>
+   <widget class="QLabel" name="lbl_turno_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>50</y>
+      <width>61</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
+color: black;</string>
+    </property>
+    <property name="text">
+     <string>Use</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_w_3">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>90</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Img/a.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_w_2">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>90</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Img/s.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_w_4">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>50</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Img/w.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_w">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>90</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Img/d.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_turno_3">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>130</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
+color: black;</string>
+    </property>
+    <property name="text">
+     <string>To move the planet</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+  </widget>
+  <zorder>lbl_back</zorder>
+  <zorder>graphicsView</zorder>
+  <zorder>lbl_time</zorder>
+  <zorder>btn_cerrar</zorder>
+  <zorder>groupBox</zorder>
+  <zorder>groupBox_2</zorder>
+  <zorder>btn_save</zorder>
+  <zorder>btn_load</zorder>
+  <zorder>btn_start</zorder>
+  <zorder>lbl_level</zorder>
+  <zorder>lbl_turno</zorder>
+  <zorder>gb_controlls</zorder>
  </widget>
  <resources>
   <include location="resources.qrc"/>

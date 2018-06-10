@@ -49,10 +49,10 @@
    <widget class="QPushButton" name="btn_multiplayer">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>270</y>
+      <x>270</x>
+      <y>230</y>
       <width>141</width>
-      <height>31</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -85,10 +85,10 @@ QPushButton:pressed {
    <widget class="QPushButton" name="btn_singleplayer">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>220</y>
+      <x>120</x>
+      <y>230</y>
       <width>141</width>
-      <height>31</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -121,10 +121,10 @@ QPushButton:pressed {
    <widget class="QPushButton" name="btn_next">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>220</y>
+      <x>460</x>
+      <y>240</y>
       <width>121</width>
-      <height>31</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -158,9 +158,9 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>590</x>
-      <y>270</y>
+      <y>240</y>
       <width>121</width>
-      <height>31</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">

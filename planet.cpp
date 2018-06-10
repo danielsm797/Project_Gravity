@@ -152,7 +152,7 @@ bool Planet::border(QMediaPlayer *mp)
         mp->play();
     }
 
-    if (abs(vel_x) < 0.5 || abs(vel_y) < 0.5)
+    if (abs(vel_x) < 1 || abs(vel_y) < 1)
     {
         resp = true; // Terminó.
     }
@@ -252,7 +252,7 @@ Planet::Planet(int pos_x_, int pos_y_, int width_, int height_, QString root_, f
 
     mode = 1; // Modo normal, 2: Modo circular y 3: Modo Pendular.
 
-    random_y = 100 + qrand() % 400;
+    random_y = 100 + qrand() % 350;
 
     y_aux = getPos_y();
 }
