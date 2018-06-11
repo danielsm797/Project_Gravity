@@ -489,6 +489,8 @@ void Scene::time_tor()
                 delete extra_.at(j);
             }
 
+            extra_.clear();
+
             est_bef = false;
 
             can_move = false;
