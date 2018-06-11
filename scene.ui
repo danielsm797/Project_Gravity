@@ -386,7 +386,7 @@ QPushButton:pressed {
   <widget class="QLabel" name="lbl_level">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>-10</x>
      <y>20</y>
      <width>111</width>
      <height>31</height>
@@ -394,10 +394,7 @@ QPushButton:pressed {
    </property>
    <property name="styleSheet">
     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
-color: #FFD502;
-border: 2px solid #FFD502;
-border-radius: 15px;
-background-color: rgba(0,0,0,.3)</string>
+color: #FFD502;</string>
    </property>
    <property name="text">
     <string>level 1</string>
@@ -417,10 +414,7 @@ background-color: rgba(0,0,0,.3)</string>
    </property>
    <property name="styleSheet">
     <string notr="true">font: italic 15pt &quot;Harlow Solid Italic&quot;;
-color: #FFD502;
-border: 2px solid #FFD502;
-border-radius: 15px;
-background-color: rgba(0,0,0,.3)</string>
+color: #FFD502;</string>
    </property>
    <property name="text">
     <string>Player 1 is playing...</string>
@@ -439,7 +433,7 @@ background-color: rgba(0,0,0,.3)</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font: italic 20pt &quot;Harlow Solid Italic&quot;;
+    <string notr="true">font: italic 18pt &quot;Harlow Solid Italic&quot;;
 color: rgb(168, 255, 87);
 background-color: transparent;
 background-color: rgba(0,0,0,.5);
