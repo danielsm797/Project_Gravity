@@ -43,14 +43,14 @@ void Velocity::keyPressEvent(QKeyEvent *e_)
         {
             if (vel_y == 0 && y)
             {
-                vel_y = 15;
+                vel_y = 90;
             }
 
             if (!y)
             {
-                vel_x = -300;
+                vel_x = -600;
 
-                vel_y = 300;
+                vel_y = 600;
             }
         }
         else if (ui->lbl_pin->x() >= 110 && ui->lbl_pin->x() < 130)
@@ -62,30 +62,30 @@ void Velocity::keyPressEvent(QKeyEvent *e_)
 
             if (!y)
             {
-                vel_x = -200;
+                vel_x = -700;
 
-                vel_y = -200;
+                vel_y = -700;
             }
         }
         else if (ui->lbl_pin->x() >= 130 && ui->lbl_pin->x() < 160)
         {
             if (vel_y == 0 && y)
             {
-                vel_y = 25;
+                vel_y = 90;
             }
 
             if (!y)
             {
-                vel_x = -100;
+                vel_x = -800;
 
-                vel_y = 100;
+                vel_y = 800;
             }
         }
         else if (ui->lbl_pin->x() >= 160)
         {
             if (vel_y == 0 && y)
             {
-                vel_y = 72;
+                vel_y = 90;
             }
 
             if (!y)

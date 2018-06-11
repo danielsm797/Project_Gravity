@@ -79,7 +79,11 @@ void Planet::mov_circular()
 
     float w = fis->cal_vel_ang(angle, 120);
 
-    QVector<float> resp = fis->cal_pos_cir(120, w, origin_x, origin_y, 0.01);
+    double orig = 0.01;
+
+    float f = (float) orig;
+
+    QVector<float> resp = fis->cal_pos_cir(120, w, origin_x, origin_y, f);
 
     setPos_x(resp.first());
 
@@ -242,7 +246,7 @@ Planet::Planet(int pos_x_, int pos_y_, int width_, int height_, QString root_, f
 
     angle = 90;
 
-    masa = 577.642151;
+    masa = 577;
 
     radio = 1.5;
 

@@ -31,7 +31,11 @@ void TargetBarrier::move_cir()
 
     float w = phy.cal_vel_ang(angulo, 35);
 
-    QVector<float> resp = phy.cal_pos_cir(35, w, origen_x, origen_y, 0.2);
+    double orig = 0.2;
+
+    float f = (float) orig;
+
+    QVector<float> resp = phy.cal_pos_cir(35, w, origen_x, origen_y, f);
 
     setPos_x(resp.first());
 

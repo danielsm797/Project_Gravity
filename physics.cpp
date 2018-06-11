@@ -68,9 +68,9 @@ QVector<float> Physics::cal_pos_cir(float rad, float w, float x, float y, float 
 {
     QVector<float> resp;
 
-    resp.append(x + rad * cos(w * t));
+    resp.append(x + rad * cosf(w * t));
 
-    resp.append(y + rad * sin(w * t));
+    resp.append(y + rad * sinf(w * t));
 
     return resp;
 }
@@ -90,7 +90,11 @@ QVector<float> Physics::cal_pos_ond(float a, float y)
 {
     QVector<float> resp;
 
-    float w = (2 * M_PI) / 20;
+    double orig = M_PI;
+
+    float f = (float) orig;
+
+    float w = (2 * f) / 20;
 
     resp.append((a * cos(w * Dt)) + y);
 

@@ -5,6 +5,8 @@ int angulo = 0;
 
 bool est_bef = false;
 
+bool est_ver = false;
+
 Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
 {
     ui->setupUi(this);
@@ -32,7 +34,7 @@ Scene::Scene(QWidget *parent) : QDialog(parent), ui(new Ui::Scene)
 
     is_second = false;
 
-    current_level = 2;
+    current_level = 0;
 
     seconds = 40;
 
@@ -271,7 +273,7 @@ void Scene::mov_planet()
         tim_cue->stop();
 
         QTimer * tim = vel.getTimer();
-        tim->start(10);
+        tim->start(2);
 
         vel.setY(false);
         vel.exec();
@@ -475,6 +477,8 @@ void Scene::time_tor()
             {
                 delete extra_.at(j);
             }
+
+            est_bef = false;
 
             can_move = false;
 
@@ -722,10 +726,7 @@ void Scene::load_game()
                 tim_hor->start(40);
             }
 
-            if (fir_list.at(4) == "1")
-            {
-                tim_ver->start(50);
-            }
+            est_ver = fir_list.at(4) == "1";
 
             // Ponemos el nombre del nivel.
             QString llv = "level ";
@@ -743,19 +744,33 @@ void Scene::load_game()
 
             is_multiplayer = fir_list.at(11) == "1";
 
+            // Ponemos los segundos.
             QString sec_ = fir_list.at(12);
             seconds = sec_.toInt();
 
+            if (sec_.length() == 1)
+            {
+                sec_.push_front("0");
+            }
+
+            sec_.push_front("00:00:");
+
+            ui->lbl_time->setText(sec_);
+
             is_tor = fir_list.at(13) == "1";
 
-            if (fir_list.at(14) == "1")
-            {
-                tim_tor->start(1000);
-            }
+            est_bef = fir_list.at(14) == "1";
+
+            //            qDebug() << fir_list.at(14);
+
+            //            if (fir_list.at(14) == "1")
+            //            {
+            //                tim_tor->start(1000);
+            //            }
 
             can_move = fir_list.last() == "1";
 
-            ui->btn_start->setText("Continue");
+            ui->btn_start->setText(fir_list.at(9) == "1" ? "Continue" : "Start");
 
             // Cargamos los planetas.
             QVector<QString> dta_vector;
@@ -857,6 +872,8 @@ void Scene::load_game()
             break;
         }
     }
+
+    tim_poder->start(70);
 }
 
 void Scene::read_level()
@@ -1025,13 +1042,15 @@ void Scene::delete_planet()
 
     if (t_c == 0 || planets.isEmpty())
     {
+        int valor = planets.length();
+
         if (is_multiplayer && !is_second)
         {
             next_level();
 
             if (t_c == 0)
             {
-                score.first() += 200;
+                score.first() += valor * 100;
             }
 
             set_score();
@@ -1044,11 +1063,11 @@ void Scene::delete_planet()
         {
             if (is_second && t_c == 0)
             {
-                score.last() += 200;
+                score.last() += valor * 100;
             }
             else if (t_c == 0)
             {
-                score.first() += 200;
+                score.first() += valor * 100;
             }
 
             set_score();
@@ -1067,7 +1086,7 @@ void Scene::delete_planet()
             {
                 ui->lbl_turno->setText("Player 1 is playing...");
 
-                if (t_c == 0)
+                if (t_c == 0 || is_second)
                 {
                     // Next level.
                     current_level += 1;
@@ -1078,7 +1097,9 @@ void Scene::delete_planet()
                         msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
                         msg.exec();
 
-                        this->close();
+                        ui->btn_cerrar->click();
+
+                        return;
                     }
 
                     QString level_name = "level ";
@@ -1237,7 +1258,7 @@ void Scene::on_btn_start_clicked()
 
             // Inicializamos el timer del pin.
             QTimer * tim = vel.getTimer();
-            tim->start(10);
+            tim->start(2);
             vel.exec();
 
             vel.setY(false);
@@ -1255,7 +1276,10 @@ void Scene::on_btn_start_clicked()
 
         if (planets.first()->getVel_x() != 0)
         {
-            tim_ver->start(50);
+            if (est_ver)
+            {
+                tim_ver->start(50);
+            }
 
             tim_cue->start(7);
 
@@ -1269,6 +1293,10 @@ void Scene::on_btn_start_clicked()
     }
     else
     {
+        est_bef = tim_tor->isActive();
+
+        est_ver = tim_ver->isActive();
+
         tim_cue->stop();
 
         tim_hor->stop();
@@ -1276,8 +1304,6 @@ void Scene::on_btn_start_clicked()
         tim_ver->stop();
 
         tim_poder->stop();
-
-        est_bef = tim_tor->isActive();
 
         tim_tor->stop();
 
@@ -1289,6 +1315,14 @@ void Scene::on_btn_start_clicked()
 
 void Scene::on_btn_save_clicked()
 {
+    // Estados de los timers.
+
+    bool est_cu = tim_cue->isActive();
+
+    bool est_ho = tim_hor->isActive();
+
+    bool est_ve = tim_ver->isActive();
+
     get_lastId(); // Obtenemos el último id.
 
     tim_hor->stop();
@@ -1299,6 +1333,38 @@ void Scene::on_btn_save_clicked()
     bool est = tim_tor->isActive();
 
     tim_tor->stop();
+
+    // Si tiene el poder no dejar guardar.
+    if (!extra_.isEmpty())
+    {
+        QMessageBox msg(QMessageBox::Warning, "Gravity", "No se puede almacenar el juego mientras esté en modo bonus.", QMessageBox::Ok, this);
+        msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+        msg.exec();
+
+        if (est_ho)
+        {
+            tim_hor->start(40);
+        }
+
+        if (est_ve)
+        {
+            tim_ver->start(50);
+        }
+
+        tim_poder->start(70);
+
+        if (est_cu)
+        {
+            tim_cue->start(7);
+        }
+
+        if (est)
+        {
+            tim_tor->start(1000);
+        }
+
+        return;
+    }
 
     /*
         Creamos el archivo y reiniciamos el juego.
@@ -1325,18 +1391,29 @@ void Scene::on_btn_save_clicked()
             {
                 over = 3;
             }
+
+            break;
         }
     }
 
     if (over == 3)
     {
-        tim_hor->start(40);
+        if (est_ho)
+        {
+            tim_hor->start(40);
+        }
 
-        tim_ver->start(50);
+        if (est_ve)
+        {
+            tim_ver->start(50);
+        }
 
         tim_poder->start(70);
 
-        tim_cue->start(7);
+        if (est_cu)
+        {
+            tim_cue->start(7);
+        }
 
         if (est)
         {
@@ -1358,9 +1435,11 @@ void Scene::on_btn_save_clicked()
 
     dta.append(QString::number(current_level).append(";"));
 
-    dta.append(tim_hor->isActive() ? "1;" : "0;");  // 1 si el taco 1 está moviendose.
+    qDebug() << est_ho << " - " << est_ve;
 
-    dta.append(tim_ver->isActive() ? "1;" : "0;");  // 1 si el taco 2 está moviendose.
+    dta.append(est_ho ? "1;" : "0;");  // 1 si el taco 1 está moviendose.
+
+    dta.append(est_ve ? "1;" : "0;");  // 1 si el taco 2 está moviendose.
 
     dta.append(ui->lbl_score1->text().append(";")); // Puntos del jugador 1
 
@@ -1382,9 +1461,9 @@ void Scene::on_btn_save_clicked()
 
     dta.append(is_tor ? "1;" : "0;");                 // Variable que controla la tormenta.
 
-    dta.append(tim_tor->isActive() ? "1;" : "0;");      // Estado del timer.
+    dta.append(est_bef ? "1;" : "0;");                    // Estado del timer.
 
-    dta.append(can_move ? "1" : "0");                   // Puede moverse.
+    dta.append(can_move ? "1" : "0");                 // Puede moverse.
 
     dta.append("@");
 
@@ -1528,10 +1607,22 @@ void Scene::on_btn_save_clicked()
         msg.exec();
     }
 
-    tim_hor->start(40);
-    tim_ver->start(50);
+    if (est_ho)
+    {
+        tim_hor->start(40);
+    }
+
+    if (est_ve)
+    {
+        tim_ver->start(50);
+    }
+
     tim_poder->start(70);
-    tim_cue->start(7);
+
+    if (est_cu)
+    {
+        tim_cue->start(7);
+    }
 
     if (est)
     {
@@ -1682,8 +1773,6 @@ void Scene::is_multi(int id_s)
 
 void Scene::next_level()
 {
-    qDebug() << "ok";
-
     clear_scene();
 
     set_planets();
