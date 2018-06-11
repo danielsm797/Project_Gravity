@@ -349,30 +349,41 @@ void Scene::mov_planet()
                     }
 
                     // Obtenemos un número aleatorio del 1 al 4.
-                    int ale = 1 + qrand() % 4;
+                    // int ale = aleatorio(1, 4);
+                    int ale = 1 + qrand() % 5;
 
                     if (ale == 1 || ale == 4) // Rebota hacia arriba.
                     {
+                        // float vel = planets.first()->getVel_x();
+
                         if (ale == 1)
                         {
                             planets.first()->setPos_x(tg->getPos_x() - 22);
+
+                            // planets.first()->setVel_x(vel < 0 ? vel : vel * -1);
                         }
                         else
                         {
                             planets.first()->setPos_x(tg->getPos_x() + 22);
-                        }
 
-                        planets.first()->setVel_x(planets.first()->getVel_x() * -1);
+                            // planets.first()->setVel_x(vel < 0 ? vel * -1 : vel);
+                        }
                     }
                     else
                     {
+                        // float vel = planets.first()->getVel_y();
+
                         if (ale == 2)
                         {
                             planets.first()->setPos_y(tg->getPos_y() - 19);
+
+                            // planets.first()->setVel_y(vel < 0 ? vel : vel * -1);
                         }
                         else
                         {
                             planets.first()->setPos_y(tg->getPos_y() + 32);
+
+                            // planets.first()->setVel_y(vel < 0 ? vel * -1 : vel);
                         }
 
                         planets.first()->setVel_y(planets.first()->getVel_y() * -1);
