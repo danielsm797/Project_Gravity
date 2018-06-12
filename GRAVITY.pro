@@ -62,6 +62,8 @@ FORMS += \
     velocity.ui \
     detail.ui
 
+RC_ICONS = ICON.ico
+
 RESOURCES += \
     resources.qrc
 

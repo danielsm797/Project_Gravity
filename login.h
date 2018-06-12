@@ -2,6 +2,7 @@
 #define LOGIN_H
 
 #include <QDialog>
+#include <QString>
 #include <QVector>
 #include <QMessageBox>
 #include "user.h"

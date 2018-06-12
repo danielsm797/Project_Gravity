@@ -1,7 +1,7 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
-
+#include <QString>
 #include <QVector>
 
 class Level

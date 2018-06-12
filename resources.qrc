@@ -39,15 +39,20 @@
         <file>SpecialElite-Regular.ttf</file>
     </qresource>
     <qresource prefix="/Sounds">
-        <file>abs.mp3</file>
-        <file>bad.mp3</file>
-        <file>bak.mp3</file>
-        <file>exp.mp3</file>
-        <file>ext.mp3</file>
-        <file>good.mp3</file>
-        <file>par.mp3</file>
-        <file>pow.mp3</file>
-        <file>tac.mp3</file>
         <file>cex.wav</file>
+        <file>tac.mp3</file>
+        <file>pow.mp3</file>
+        <file>par.mp3</file>
+        <file>good.mp3</file>
+        <file>ext.mp3</file>
+        <file>exp.mp3</file>
+        <file>bak.mp3</file>
+        <file>bad.mp3</file>
+        <file>abs.mp3</file>
+    </qresource>
+    <qresource prefix="/Files">
+        <file>Users_doc.txt</file>
+        <file>Level_doc.txt</file>
+        <file>Game_doc.txt</file>
     </qresource>
 </RCC>

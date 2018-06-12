@@ -2,6 +2,7 @@
 #define TACO_H
 
 #include "element.h"
+#include <QString>
 
 class Taco : public Element
 {

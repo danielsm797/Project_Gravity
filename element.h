@@ -2,6 +2,7 @@
 #define ELEMENT_H
 
 #include <QPainter>
+#include <QString>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 

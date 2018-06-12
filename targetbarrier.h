@@ -4,6 +4,7 @@
 
 #include "element.h"
 #include "physics.h"
+#include <QString>
 #include <QMediaPlayer>
 
 class TargetBarrier : public Element

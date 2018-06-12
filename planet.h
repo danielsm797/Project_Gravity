@@ -2,6 +2,7 @@
 #define PLANET_H
 
 #include <QDebug>
+#include <QString>
 #include <QMediaPlayer>
 #include "physics.h"
 #include "element.h"

@@ -8,11 +8,12 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsItem>
 #include <QMediaPlayer>
-#include <fstream>
 #include <QKeyEvent>
-#include <time.h>
 #include <QToolTip>
 #include <QFontDatabase>
+#include <QString>
+#include <fstream>
+#include <time.h>
 #include <qmediaplaylist.h>
 #include "user.h"
 #include "planet.h"

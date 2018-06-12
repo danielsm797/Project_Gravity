@@ -1,6 +1,7 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
+#define _USE_MATH_DEFINES
 #include <QVector>
 #include <math.h>
 
