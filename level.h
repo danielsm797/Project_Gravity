@@ -12,7 +12,7 @@ private:
 
     float coe_res;
 
-    float coe_vis;
+    float coe_vis; // Coeficiente de restitución.
 
     QVector<QString> targets; // Objetivos.
 

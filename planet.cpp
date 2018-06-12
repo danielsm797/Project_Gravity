@@ -127,7 +127,7 @@ bool Planet::border(QMediaPlayer *mp)
     {
         setPos_x(11);
 
-        vel_x *= -1;
+        vel_x *= (-1 * coe_re);
 
         mp->play();
     }
@@ -135,7 +135,7 @@ bool Planet::border(QMediaPlayer *mp)
     {
         setPos_x(700);
 
-        vel_x *= -1;
+        vel_x *= (-1 * coe_re);
 
         mp->play();
     }
@@ -143,7 +143,7 @@ bool Planet::border(QMediaPlayer *mp)
     {
         setPos_y(11);
 
-        vel_y *= -1;
+        vel_y *= (-1 * coe_re);
 
         mp->play();
     }
@@ -151,7 +151,7 @@ bool Planet::border(QMediaPlayer *mp)
     {
         setPos_y(540);
 
-        vel_y *= -1;
+        vel_y *= (-1 * coe_re);
 
         mp->play();
     }
@@ -234,13 +234,13 @@ void Planet::setAngle(float value)
     angle = value;
 }
 
-Planet::Planet(int pos_x_, int pos_y_, int width_, int height_, QString root_, float ace_gra_, float coe_fr_) : Element(pos_x_, pos_y_, width_, height_, root_)
+Planet::Planet(int pos_x_, int pos_y_, int width_, int height_, QString root_, float ace_gra_, float coe_fr_, float coe_rt_) : Element(pos_x_, pos_y_, width_, height_, root_)
 {
     ace_gra = ace_gra_;
 
     coe_fr = coe_fr_;
 
-    coe_re = 0;
+    coe_re = coe_rt_;
 
     vel_x = 0;
 

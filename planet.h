@@ -40,7 +40,7 @@ private:
 
 public:
 
-    Planet(int pos_x_, int pos_y_, int width_, int height_, QString root_, float ace_gra_, float coe_fr_);
+    Planet(int pos_x_, int pos_y_, int width_, int height_, QString root_, float ace_gra_, float coe_fr_, float coe_rt_);
 
     float getAce_gra() const;
 

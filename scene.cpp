@@ -368,6 +368,8 @@ void Scene::mov_planet()
 
                             // planets.first()->setVel_x(vel < 0 ? vel * -1 : vel);
                         }
+
+                        planets.first()->setVel_x(planets.first()->getVel_x() * -1);
                     }
                     else
                     {
@@ -566,7 +568,7 @@ void Scene::set_planets()
         QString root = ":/Img/";
         root.append(t.append(".png"));
 
-        planets.append(new Planet(x, y, 32, 32, root, g.toFloat(), levels.at(current_level)->getCoe_res()));
+        planets.append(new Planet(x, y, 32, 32, root, g.toFloat(), levels.at(current_level)->getCoe_res(), levels.at(current_level)->getCoe_vis()));
         gc->addItem(planets.last());
         planets.last()->set_position();
     }
@@ -808,7 +810,8 @@ void Scene::load_game()
                 QString ox_ = pd_list.at(9);
                 QString oy_ = pd_list.at(10);
 
-                planets.append(new Planet(x_.toFloat(), y_.toFloat(), 32, 32, pd_list.at(6), g_.toFloat(), levels.at(current_level)->getCoe_res()));
+
+                planets.append(new Planet(x_.toFloat(), y_.toFloat(), 32, 32, pd_list.at(6), g_.toFloat(), levels.at(current_level)->getCoe_res(), levels.at(current_level)->getCoe_vis()));
                 gc->addItem(planets.last());
 
                 planets.last()->setMode(mo_.toInt());
