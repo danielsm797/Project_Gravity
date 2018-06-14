@@ -731,7 +731,25 @@ void Scene::load_game()
 
             current_level = id_lv.toInt(); // Ponemos el id del nivel.
 
+            // Ponemos la imagen de fondo.
+            if (current_level == 1)
+            {
+                ui->lbl_back->setTextFormat(Qt::RichText);
+                ui->lbl_back->setText("<img src=':/Img/back-game-1.jpg'>");
+            }
+            else if (current_level == 2)
+            {
+                ui->lbl_back->setTextFormat(Qt::RichText);
+                ui->lbl_back->setText("<img src=':/Img/back-game-2.jpg'>");
+            }
+
             // Ponemos los puntos
+            QString sc = fir_list.at(4);
+            score.first() = sc.toInt();
+
+            sc = fir_list.at(5);
+            score.last() = sc.toInt();
+
             ui->lbl_score1->setText(fir_list.at(4));
             ui->lbl_score2->setText(fir_list.at(5));
 
@@ -757,7 +775,7 @@ void Scene::load_game()
 
             vel.setY(fir_list.at(10) == "1");
 
-            is_multiplayer = fir_list.at(11) == "1";
+            is_multiplayer = (fir_list.at(11) == "1");
 
             // Ponemos los segundos.
             QString sec_ = fir_list.at(12);
@@ -776,14 +794,14 @@ void Scene::load_game()
 
             est_bef = fir_list.at(14) == "1";
 
-            //            qDebug() << fir_list.at(14);
+            can_move = fir_list.at(15) == "1";
 
-            //            if (fir_list.at(14) == "1")
-            //            {
-            //                tim_tor->start(1000);
-            //            }
+            is_second = fir_list.last() == "1";
 
-            can_move = fir_list.last() == "1";
+            if (is_second)
+            {
+                ui->lbl_turno->setText("Player 2 is playing...");
+            }
 
             ui->btn_start->setText(fir_list.at(9) == "1" ? "Continue" : "Start");
 
@@ -1471,15 +1489,19 @@ void Scene::on_btn_save_clicked()
 
     dta.append(vel.getY() ? "1;" : "0;");       // Variable vel del velocimetro
 
+    qDebug() << is_multiplayer;
+
     dta.append(is_multiplayer ? "1;" : "0;");   // Guarda si la partida es multiplayer o no.
 
     dta.append(QString::number(seconds).append(";")); // Número de segundos.
 
     dta.append(is_tor ? "1;" : "0;");                 // Variable que controla la tormenta.
 
-    dta.append(est_bef ? "1;" : "0;");                    // Estado del timer.
+    dta.append(est_bef ? "1;" : "0;");                // Estado del timer.
 
-    dta.append(can_move ? "1" : "0");                 // Puede moverse.
+    dta.append(can_move ? "1;" : "0;");               // Puede moverse.
+
+    dta.append(is_second ? "1" : "0");                // Turno de quien.
 
     dta.append("@");
 
@@ -1648,6 +1670,12 @@ void Scene::on_btn_save_clicked()
 
 void Scene::on_btn_load_clicked()
 {
+    if (!extra_.isEmpty())
+    {
+        qDebug() << "No se puede cargar la partida en modo bonus.";
+        return;
+    }
+
     QString id_lg = QString::number(player_1->getId_lastGame());
 
     QString id_lg_s = "0";
@@ -1668,7 +1696,7 @@ void Scene::on_btn_load_clicked()
         }
     }
 
-    if (id_lg == 0)
+    if (id_lg.toInt() == 0)
     {
         QMessageBox msg(QMessageBox::Warning, "Gravity", "No tiene ninguna partida almacenada.", QMessageBox::Ok, this);
         msg.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
@@ -1678,6 +1706,12 @@ void Scene::on_btn_load_clicked()
     }
 
     id_lg.push_front("Se cargará la partida número ");
+
+    bool est_cu = tim_cue->isActive();
+    bool est_ho = tim_hor->isActive();
+    bool est_ve = tim_ver->isActive();
+    bool est_po = tim_poder->isActive();
+    bool est_to = tim_tor->isActive();
 
     tim_cue->stop();
 
@@ -1702,9 +1736,30 @@ void Scene::on_btn_load_clicked()
     }
     else
     {
-        tim_hor->start(40);
-        tim_ver->start(50);
-        tim_cue->start(7);
+        if (est_cu)
+        {
+            tim_cue->start(7);
+        }
+
+        if (est_ho)
+        {
+            tim_hor->start(40);
+        }
+
+        if (est_ve)
+        {
+            tim_ver->start(50);
+        }
+
+        if (est_po)
+        {
+            tim_poder->start(70);
+        }
+
+        if (est_to)
+        {
+            tim_tor->start(1000);
+        }
     }
 }
 
@@ -1780,7 +1835,7 @@ void Scene::is_multi(int id_s)
 
         if (id_gm.toInt() == id_s)
         {
-            is_multiplayer = fir_list.last() == "1";
+            is_multiplayer = fir_list.at(11) == "1";
 
             break;
         }
